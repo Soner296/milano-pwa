@@ -1,0 +1,3540 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#19362c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Milano">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<link rel="icon" href="./icon-192.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<style>
+:root{font-family:system-ui,sans-serif;color:#1d342b;background:#f5f1e8;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0}
+header{background:#19362c;color:#fff9eb;padding-top:env(safe-area-inset-top)}
+.masthead,main{max-width:720px;margin:auto;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+.masthead{display:flex;justify-content:space-between;align-items:center;padding-block:20px 25px}
+.wordmark{font:italic 56px/.95 Georgia,serif;letter-spacing:-3px}
+.wordmark span{color:#f2a46f}
+.masthead p{margin:9px 0 0;color:#e2dbc5;font-size:.78rem;letter-spacing:.04em}
+.call{border:1px solid #829287;border-radius:25px;color:white;text-decoration:none;padding:11px 20px}
+.tabs{margin:20px 0;display:grid;grid-template-columns:1fr 1fr;padding:4px;background:#e9e4d9;border-radius:14px;gap:4px}
+button,input{font:inherit}
+button{cursor:pointer;color:inherit}
+.tabs button{border:0;border-radius:10px;background:transparent;min-height:44px;font-weight:650}
+.tabs [aria-selected=true]{background:#19362c;color:white}
+.search-area label{display:block;font-weight:700;margin-bottom:8px}
+.search{display:flex;align-items:center;gap:10px;background:#fffdfa;border:1px solid #b0b7ac;border-radius:13px;padding:0 13px}
+.search span{font-size:1.6rem}
+.search input{border:0;width:100%;min-width:0;min-height:50px;background:transparent;color:inherit;font-size:16px;outline:none}
+.search input::-webkit-search-cancel-button{display:none;-webkit-appearance:none}
+#clear-query{flex:none;width:44px;height:44px;border:0;border-radius:50%;background:transparent;font-size:26px;line-height:1;color:#506258;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#clear-query:active{background:#e8efe5}
+.search:focus-within{outline:2px solid #19664b;outline-offset:2px}
+:focus-visible{outline:2px solid #19664b;outline-offset:2px}
+#hint,.meta,#count,footer,.size{color:#506258;font-size:.79rem}
+#hint{margin:8px 0 12px}
+.filters{display:flex;gap:7px;overflow:auto;padding:3px 3px 8px;scrollbar-width:thin}
+.filters button{flex:none;background:#fffdfa;border:1px solid #d3d9cc;border-radius:30px;min-height:44px;padding-inline:13px;font-size:.8rem}
+.filters [aria-pressed=true]{background:#dce8da;border-color:#456d56;font-weight:700}
+.results-header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:15px 0 8px}
+h1{font:normal 29px Georgia,serif;margin:0}
+#results-title.address-title{font-size:24px}
+#results{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;background:#fffdfa;border:1px solid #e9e3d8;border-radius:12px;padding:11px;min-height:63px}
+.address-card{grid-template-columns:minmax(0,1fr) auto}
+.town-card{background:#fffdfa;border:1px solid #e9e3d8;border-radius:12px}
+.town-button{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px;width:100%;border:0;background:transparent;text-align:left;padding:11px;min-height:63px;border-radius:12px}
+.town-button::after{content:"";width:8px;height:8px;border-right:2px solid #506258;border-top:2px solid #506258;transform:rotate(45deg);margin:0 5px 0 1px}
+.town-button>span:nth-child(2){text-align:right;white-space:nowrap}
+#town-panel{padding-top:17px}
+#town-back{min-height:44px;padding:0 13px;border:1px solid #b9cbb9;border-radius:10px;background:#e8efe5;font-weight:650}
+#town-title:focus{outline:none}
+#town-minimum{margin-top:0}
+.town-streets{list-style:none;margin:15px 0 0;padding:0 11px;background:#fffdfa;border:1px solid #e9e3d8;border-radius:12px}
+.town-streets:empty{display:none}
+.town-streets li{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #e9e3d8;font-size:.88rem}
+.town-streets li:first-child{border-top:0}
+.maps-link{color:#234f3d;background:#e8efe5;border:1px solid #b9cbb9;border-radius:8px;font-size:.75rem;font-weight:700;display:inline-flex;align-items:center;min-height:44px;padding-inline:9px;white-space:nowrap;text-decoration:none}
+.town-streets li{padding-block:4px}
+.address-card .maps-link{margin-top:5px}
+.number{font-size:.74rem;min-width:32px;text-align:center;padding:5px 4px;border-radius:6px;color:#753e2b;background:#f3e7d9;font-variant-numeric:tabular-nums}
+.name{display:block;font-weight:660;font-size:.94rem;overflow-wrap:anywhere}
+.meta{display:block;margin-top:3px}
+.meta a,footer a{color:inherit}
+.prices{display:flex;gap:9px;text-align:right;white-space:nowrap}
+.price{font-size:.86rem;font-weight:720;display:block;font-variant-numeric:tabular-nums}
+.size{font-size:.65rem;display:block;margin-top:2px}
+#total{background:#dce8da;padding:11px 13px;margin:0 0 8px;border-radius:10px;font-size:.9rem}
+.empty{padding:20px 8px;color:#506258}
+footer{padding:20px 0 calc(20px + env(safe-area-inset-bottom))}
+@media(max-width:360px){.masthead,main{padding-inline:13px}.card{gap:6px;padding-inline:8px}.prices{gap:6px}}
+
+html.search-compact,html.search-compact body{overflow:hidden;overscroll-behavior:none}
+.search-compact header,.search-compact #main-tabs,.search-compact #filters,
+.search-compact #results-panel .results-header,.search-compact #hint,
+.search-compact #results-panel footer{display:none!important}
+.search-compact main{position:fixed;top:var(--search-top,0px);left:0;right:0;height:var(--search-height,100dvh);padding-top:8px;padding-bottom:max(8px,env(safe-area-inset-bottom));overflow:hidden}
+.search-compact #results-panel{height:100%;display:flex;flex-direction:column;min-height:0}
+.search-compact .search-area{flex:none;padding:3px}
+.search-compact .search-area label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.search-compact #results{flex:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;align-content:start;margin-top:8px}
+.search-compact #total{flex:none;margin:8px 0 0}
+
+</style>
+<title>Milano · Güncel arama</title>
+</head>
+<body>
+<header>
+  <div class="masthead">
+    <div><div class="wordmark">Milano<span>.</span></div><p>Ristorante &amp; Pizzeria</p></div>
+    <a class="call" href="tel:+4963594090491" aria-label="Milano’yu ara">Ara</a>
+  </div>
+</header>
+<main>
+  <div id="main-tabs" class="tabs" role="tablist" aria-label="Arama türü">
+    <button id="menu-tab" role="tab" aria-selected="true" aria-controls="results-panel">Menü</button>
+    <button id="address-tab" role="tab" aria-selected="false" aria-controls="results-panel" tabindex="-1">Adres</button>
+  </div>
+  <section id="results-panel" role="tabpanel" aria-labelledby="menu-tab">
+    <div class="search-area">
+      <label id="search-label" for="query">Yemek ara</label>
+      <div class="search"><span aria-hidden="true">⌕</span><input id="query" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Numara veya yemek adı"><button id="clear-query" type="button" aria-label="Aramayı temizle" hidden>×</button></div>
+      <p id="hint">Boyut için 24m veya 27g yaz. Birden fazla kodda toplamı gör.</p>
+    </div>
+    <div id="filters" class="filters" aria-label="Filtreler"></div>
+    <div class="results-header"><h1 id="results-title">Speisekarte</h1><span id="count" role="status"></span></div>
+    <div id="total" aria-live="polite" hidden></div>
+    <ul id="results"></ul>
+    <footer>
+      <a id="pdf-link" href="./speisekarte.pdf#page=2" target="_blank" rel="noopener">Orijinal menü PDF’si ↗</a>
+      <p id="street-attribution" hidden><a href="https://geoshop.rlp.de/opendata-hk.html" target="_blank" rel="noopener">©GeoBasis-DE / LVermGeoRP (2026)</a> · <a href="https://www.govdata.de/dl-de/by-2-0" target="_blank" rel="noopener">dl-de/by-2-0</a> · Daten bearbeitet<br><a href="https://www.openplzapi.org/en/sources/" target="_blank" rel="noopener">OpenPLZ API</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors · ODbL</a></p>
+    </footer>
+  </section>
+  <section id="town-panel" aria-labelledby="town-title" hidden>
+    <button id="town-back" type="button">← Teslimat yerlerine dön</button>
+    <div class="results-header"><h1 id="town-title" tabindex="-1"></h1><span id="town-count" class="meta"></span></div>
+    <p id="town-minimum" class="meta"></p>
+    <p id="town-note" class="meta" hidden></p>
+    <ul id="town-streets" class="town-streets"></ul>
+    <footer><a href="https://geoshop.rlp.de/opendata-hk.html" target="_blank" rel="noopener">©GeoBasis-DE / LVermGeoRP (2026)</a> · <a href="https://www.govdata.de/dl-de/by-2-0" target="_blank" rel="noopener">dl-de/by-2-0</a> · Daten bearbeitet<br><a href="https://www.openplzapi.org/en/sources/" target="_blank" rel="noopener">OpenPLZ API</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors · ODbL</a></footer>
+  </section>
+</main>
+<script>
+const data = {
+  "menu": [
+  [
+    "01",
+    "Portion Oliven und Peperoni",
+    "Vorspeisen",
+    [
+      500
+    ],
+    2
+  ],
+  [
+    "02",
+    "Gefüllte Weinblätter",
+    "Vorspeisen",
+    [
+      550
+    ],
+    2
+  ],
+  [
+    "03",
+    "Weichkäse überbacken",
+    "Vorspeisen",
+    [
+      750
+    ],
+    2
+  ],
+  [
+    "04",
+    "Weichkäse natur mit Zwiebelringen",
+    "Vorspeisen",
+    [
+      800
+    ],
+    2
+  ],
+  [
+    "05",
+    "Cocktail di Gomberi (Krabbencocktail)",
+    "Vorspeisen",
+    [
+      850
+    ],
+    2
+  ],
+  [
+    "10",
+    "Tomatensuppe",
+    "Suppen",
+    [
+      550
+    ],
+    2
+  ],
+  [
+    "11",
+    "Minestrone (Gemüsesuppe)",
+    "Suppen",
+    [
+      550
+    ],
+    2
+  ],
+  [
+    "12",
+    "Tortellini in Brodo (in der Brühe)",
+    "Suppen",
+    [
+      550
+    ],
+    2
+  ],
+  [
+    "16",
+    "Familienpizza mit Käse und Tomatensauce",
+    "Pizza",
+    [
+      1700
+    ],
+    2
+  ],
+  [
+    "17",
+    "Pizza Romeo",
+    "Pizza",
+    [
+      1100,
+      1240
+    ],
+    2
+  ],
+  [
+    "18",
+    "Pizza Caprese",
+    "Pizza",
+    [
+      1100,
+      1240
+    ],
+    2
+  ],
+  [
+    "19",
+    "Pizza Rucola",
+    "Pizza",
+    [
+      1100,
+      1240
+    ],
+    2
+  ],
+  [
+    "20",
+    "Pizzabrot mit frischen Tomaten und Weichkäse",
+    "Pizza",
+    [
+      850,
+      950
+    ],
+    2
+  ],
+  [
+    "21",
+    "Pizzabrot ohne Käse",
+    "Pizza",
+    [
+      450,
+      500
+    ],
+    2
+  ],
+  [
+    "22",
+    "Pizzabrot mit Käse",
+    "Pizza",
+    [
+      750,
+      850
+    ],
+    2
+  ],
+  [
+    "23",
+    "Pizzabrot mit Tomaten und Knoblauch",
+    "Pizza",
+    [
+      550,
+      650
+    ],
+    2
+  ],
+  [
+    "24",
+    "Pizza Margherita",
+    "Pizza",
+    [
+      950,
+      1000
+    ],
+    2
+  ],
+  [
+    "25",
+    "Pizza Salami",
+    "Pizza",
+    [
+      1000,
+      1100
+    ],
+    2
+  ],
+  [
+    "26",
+    "Pizza Prosciutto",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    2
+  ],
+  [
+    "27",
+    "Pizza Hawaii",
+    "Pizza",
+    [
+      1050,
+      1150
+    ],
+    2
+  ],
+  [
+    "28",
+    "Pizza Funghi",
+    "Pizza",
+    [
+      950,
+      1100
+    ],
+    3
+  ],
+  [
+    "29",
+    "Pizza Bolognese",
+    "Pizza",
+    [
+      1050,
+      1150
+    ],
+    3
+  ],
+  [
+    "30",
+    "Pizza Calzone",
+    "Pizza",
+    [
+      1050,
+      1200
+    ],
+    3
+  ],
+  [
+    "31",
+    "Pizza Sardelle",
+    "Pizza",
+    [
+      1000,
+      1100
+    ],
+    3
+  ],
+  [
+    "32",
+    "Pizza Frutti die Mare",
+    "Pizza",
+    [
+      1150,
+      1250
+    ],
+    3
+  ],
+  [
+    "33",
+    "Pizza Tonno",
+    "Pizza",
+    [
+      1050,
+      1200
+    ],
+    3
+  ],
+  [
+    "34",
+    "Pizza 4 Stagioni",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    3
+  ],
+  [
+    "35",
+    "Pizza Sole",
+    "Pizza",
+    [
+      1200,
+      1300
+    ],
+    3
+  ],
+  [
+    "36",
+    "Pizza Prosciutto e Funghi",
+    "Pizza",
+    [
+      1000,
+      1100
+    ],
+    3
+  ],
+  [
+    "37",
+    "Pizza Pescatore",
+    "Pizza",
+    [
+      1200,
+      1350
+    ],
+    3
+  ],
+  [
+    "38",
+    "Pizza Roma",
+    "Pizza",
+    [
+      1200,
+      1350
+    ],
+    3
+  ],
+  [
+    "39",
+    "Pizza Calzone",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    3
+  ],
+  [
+    "40",
+    "Pizza Marina",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    3
+  ],
+  [
+    "41",
+    "Pizza Ufo",
+    "Pizza",
+    [
+      1100,
+      1240
+    ],
+    3
+  ],
+  [
+    "42",
+    "Pizza Atlantic",
+    "Pizza",
+    [
+      1200,
+      1290
+    ],
+    3
+  ],
+  [
+    "43",
+    "Pizza Quattro Formaggi",
+    "Pizza",
+    [
+      1200,
+      1290
+    ],
+    3
+  ],
+  [
+    "44",
+    "Pizza Maria",
+    "Pizza",
+    [
+      1050,
+      1100
+    ],
+    3
+  ],
+  [
+    "45",
+    "Pizza Capri",
+    "Pizza",
+    [
+      1000,
+      1150
+    ],
+    4
+  ],
+  [
+    "46",
+    "Pizza Rustika",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    4
+  ],
+  [
+    "47",
+    "Pizza Vegetaria",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    4
+  ],
+  [
+    "48",
+    "Pizza Desiderio",
+    "Pizza",
+    [
+      1150,
+      1250
+    ],
+    4
+  ],
+  [
+    "49",
+    "Pizza Capricciosa",
+    "Pizza",
+    [
+      1190,
+      1290
+    ],
+    4
+  ],
+  [
+    "50",
+    "Pizza Diavolo",
+    "Pizza",
+    [
+      1150,
+      1300
+    ],
+    4
+  ],
+  [
+    "51",
+    "Pizza Lucana",
+    "Pizza",
+    [
+      1150,
+      1350
+    ],
+    4
+  ],
+  [
+    "52",
+    "Pizza Italia",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    4
+  ],
+  [
+    "53",
+    "Pizza alla Chef",
+    "Pizza",
+    [
+      1050,
+      1190
+    ],
+    4
+  ],
+  [
+    "54",
+    "Pizza Spezial",
+    "Pizza",
+    [
+      1200,
+      1340
+    ],
+    4
+  ],
+  [
+    "55",
+    "Pizza Gorgonzola",
+    "Pizza",
+    [
+      1150,
+      1290
+    ],
+    4
+  ],
+  [
+    "56",
+    "Pizza Bella Italia",
+    "Pizza",
+    [
+      1100,
+      1200
+    ],
+    4
+  ],
+  [
+    "57",
+    "Pizza Milano",
+    "Pizza",
+    [
+      1100,
+      1250
+    ],
+    4
+  ],
+  [
+    "58",
+    "Pizza Krabben",
+    "Pizza",
+    [
+      1150,
+      1250
+    ],
+    4
+  ],
+  [
+    "59",
+    "Pizza Salami e Funghi",
+    "Pizza",
+    [
+      1050,
+      1150
+    ],
+    4
+  ],
+  [
+    "60",
+    "Putensteak mit Kräuterbutter",
+    "Pute",
+    [
+      1450
+    ],
+    5
+  ],
+  [
+    "61",
+    "Putensteak mit frischer Champignonsoße",
+    "Pute",
+    [
+      1550
+    ],
+    5
+  ],
+  [
+    "62",
+    "Putenschnitzel paniert",
+    "Pute",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "63",
+    "Putenschnitzel paniert mit Rahmsoße",
+    "Pute",
+    [
+      1550
+    ],
+    5
+  ],
+  [
+    "64",
+    "Hawaiischnitzel mit Ananas und Formvorderschinken überbacken",
+    "Schnitzel & mehr",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "70",
+    "Schweineschnitzel paniert",
+    "Schnitzel & mehr",
+    [
+      1150
+    ],
+    5
+  ],
+  [
+    "71",
+    "Schweineschnitzel paniert mit scharfer Soße",
+    "Schnitzel & mehr",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "72",
+    "Parmigiana Schnitzel paniert und überbacken mit Tomatensoße",
+    "Schnitzel & mehr",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "73",
+    "Schweineschnitzel paniert mit Bolognesesoße",
+    "Schnitzel & mehr",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "74",
+    "Jägerschnitzel paniert",
+    "Schnitzel & mehr",
+    [
+      1300
+    ],
+    5
+  ],
+  [
+    "75",
+    "Zigeunerschnitzel paniert",
+    "Schnitzel & mehr",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "76",
+    "Rahmschnitzel",
+    "Schnitzel & mehr",
+    [
+      1350
+    ],
+    5
+  ],
+  [
+    "77",
+    "Nuggets mit Pommes",
+    "Schnitzel & mehr",
+    [
+      1000
+    ],
+    5
+  ],
+  [
+    "80",
+    "Spaghetti al Forno",
+    "Pasta al Forno",
+    [
+      1050
+    ],
+    5
+  ],
+  [
+    "81",
+    "Lasagne",
+    "Pasta al Forno",
+    [
+      1050
+    ],
+    5
+  ],
+  [
+    "82",
+    "Combinazione",
+    "Pasta al Forno",
+    [
+      1050
+    ],
+    5
+  ],
+  [
+    "83",
+    "Tortellini al Forno",
+    "Pasta al Forno",
+    [
+      1050
+    ],
+    5
+  ],
+  [
+    "84",
+    "Rigatoni al Forno",
+    "Pasta al Forno",
+    [
+      1050
+    ],
+    5
+  ],
+  [
+    "85",
+    "Tagliatelle al Forno",
+    "Pasta al Forno",
+    [
+      1200
+    ],
+    5
+  ],
+  [
+    "86",
+    "Gnocchi al Forno",
+    "Pasta al Forno",
+    [
+      1100
+    ],
+    5
+  ],
+  [
+    "90",
+    "Spaghetti „Asterix“",
+    "Kindergerichte",
+    [
+      650
+    ],
+    6
+  ],
+  [
+    "91",
+    "Spaghetti „Mickey Mouse“",
+    "Kindergerichte",
+    [
+      550
+    ],
+    6
+  ],
+  [
+    "92",
+    "Kinderschnitzel (paniert) mit Pommes",
+    "Kindergerichte",
+    [
+      800
+    ],
+    6
+  ],
+  [
+    "93",
+    "Tortellini alla Panna (kleine Portion)",
+    "Kindergerichte",
+    [
+      690
+    ],
+    6
+  ],
+  [
+    null,
+    "Pommes",
+    "Beilagen",
+    [
+      400
+    ],
+    6
+  ],
+  [
+    null,
+    "Kroketten",
+    "Beilagen",
+    [
+      500
+    ],
+    6
+  ],
+  [
+    "94",
+    "Spaghetti Napoli",
+    "Pasta",
+    [
+      850
+    ],
+    6
+  ],
+  [
+    "95",
+    "Spaghetti Bolognese",
+    "Pasta",
+    [
+      950
+    ],
+    6
+  ],
+  [
+    "96",
+    "Spaghetti Carbonara",
+    "Pasta",
+    [
+      1000
+    ],
+    6
+  ],
+  [
+    "97",
+    "Spaghetti a la Chef",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "98",
+    "Spaghetti Sicilliana",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "99",
+    "Spaghetti al Pesto",
+    "Pasta",
+    [
+      950
+    ],
+    6
+  ],
+  [
+    "100",
+    "Spaghetti mit Krabben",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "101",
+    "Spaghetti Vongole",
+    "Pasta",
+    [
+      1150
+    ],
+    6
+  ],
+  [
+    "102",
+    "Spaghetti Frutti Di Mare",
+    "Pasta",
+    [
+      1150
+    ],
+    6
+  ],
+  [
+    "103",
+    "Spaghetti Pescatore",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "104",
+    "Spaghetti Gorgonzola",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "105",
+    "Rigatoni Napoli",
+    "Pasta",
+    [
+      850
+    ],
+    6
+  ],
+  [
+    "106",
+    "Rigatoni Bolognese",
+    "Pasta",
+    [
+      950
+    ],
+    6
+  ],
+  [
+    "107",
+    "Rigatoni Carbonara",
+    "Pasta",
+    [
+      1000
+    ],
+    6
+  ],
+  [
+    "108",
+    "Rigatoni Vegetaria",
+    "Pasta",
+    [
+      1050
+    ],
+    6
+  ],
+  [
+    "109",
+    "Rigatoni al Formaggi",
+    "Pasta",
+    [
+      1150
+    ],
+    6
+  ],
+  [
+    "110",
+    "Rigatoni Broccoli",
+    "Pasta",
+    [
+      1000
+    ],
+    6
+  ],
+  [
+    "111",
+    "Tagliatelle Carbonara",
+    "Pasta",
+    [
+      1000
+    ],
+    6
+  ],
+  [
+    "112",
+    "Tagliatelle Bolognese",
+    "Pasta",
+    [
+      950
+    ],
+    6
+  ],
+  [
+    "113",
+    "Tagliatelle Bella Italia",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "114",
+    "Tagliatelle Lachs",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "115",
+    "Tagliatelle Frutti Di Mare",
+    "Pasta",
+    [
+      1150
+    ],
+    6
+  ],
+  [
+    "116",
+    "Tortellini Napoli",
+    "Pasta",
+    [
+      850
+    ],
+    6
+  ],
+  [
+    "117",
+    "Tortellini Primavera",
+    "Pasta",
+    [
+      1100
+    ],
+    6
+  ],
+  [
+    "118",
+    "Tortellini Bolognese",
+    "Pasta",
+    [
+      950
+    ],
+    6
+  ],
+  [
+    "119",
+    "Tortellini alle Panna",
+    "Pasta",
+    [
+      950
+    ],
+    6
+  ],
+  [
+    "120",
+    "Tortellini Carbonara",
+    "Pasta",
+    [
+      1000
+    ],
+    6
+  ],
+  [
+    "121",
+    "Gnocchi Napoli",
+    "Pasta",
+    [
+      850
+    ],
+    7
+  ],
+  [
+    "122",
+    "Gnocchi Bolognese",
+    "Pasta",
+    [
+      900
+    ],
+    7
+  ],
+  [
+    "123",
+    "Gnocchi alla Panna",
+    "Pasta",
+    [
+      950
+    ],
+    7
+  ],
+  [
+    "124",
+    "Gnocchi Carbonara",
+    "Pasta",
+    [
+      1000
+    ],
+    7
+  ],
+  [
+    "125",
+    "Gnocchi al Pesto",
+    "Pasta",
+    [
+      1000
+    ],
+    7
+  ],
+  [
+    "126",
+    "Gnocchi Gorgonzola",
+    "Pasta",
+    [
+      1150
+    ],
+    7
+  ],
+  [
+    "130",
+    "Gurkensalat",
+    "Salate",
+    [
+      600
+    ],
+    7
+  ],
+  [
+    "131",
+    "Grüner Salat",
+    "Salate",
+    [
+      600
+    ],
+    7
+  ],
+  [
+    "132",
+    "Gemischter Salat",
+    "Salate",
+    [
+      700
+    ],
+    7
+  ],
+  [
+    "133",
+    "Kleiner italienischer Salat",
+    "Salate",
+    [
+      700
+    ],
+    7
+  ],
+  [
+    "134",
+    "Großer italienischer Salat",
+    "Salate",
+    [
+      790
+    ],
+    7
+  ],
+  [
+    "135",
+    "Kleiner Nizza Salat",
+    "Salate",
+    [
+      750
+    ],
+    7
+  ],
+  [
+    "136",
+    "Großer Nizza Salat",
+    "Salate",
+    [
+      850
+    ],
+    7
+  ],
+  [
+    "137",
+    "Tomatensalat mit Zwiebeln",
+    "Salate",
+    [
+      700
+    ],
+    7
+  ],
+  [
+    "138",
+    "Tomatensalat",
+    "Salate",
+    [
+      950
+    ],
+    7
+  ],
+  [
+    "139",
+    "Bauernsalat",
+    "Salate",
+    [
+      1000
+    ],
+    7
+  ],
+  [
+    "140",
+    "Salatteller mit Putenstreifen",
+    "Salate",
+    [
+      1200
+    ],
+    7
+  ]
+],
+  "towns": {
+  "Asselheim": 12,
+  "Grünstadt": 12,
+  "Sausenheim": 12,
+  "Quirnheim": 17,
+  "Kindenheim": 17,
+  "Bockenheim": 17,
+  "Ebertsheim": 17,
+  "Mertesheim": 17,
+  "Albsheim": 17,
+  "Colgenstein": 17,
+  "Obrigheim": 17,
+  "Heidesheim": 17,
+  "Obersülzen": 17,
+  "Tiefenthal": 17,
+  "Dirmstein": 17,
+  "Neuleiningen": 17,
+  "Laumersheim": 17,
+  "Kirchheim": 17,
+  "Kleinkarlbach": 17,
+  "Dackenheim": 17,
+  "Großkarlbach": 17,
+  "Bobenheim": 17,
+  "Herxheim": 17,
+  "Weisenheim am Berg": 17,
+  "Monsheim": 22,
+  "Boßweiler": 22,
+  "Eisenberg": 22,
+  "Offstein": 22,
+  "Hohensülzen": 22,
+  "Hettenleidelheim": 22,
+  "Gerolsheim": 22,
+  "Heuchelheim": 22,
+  "Altleiningen": 22,
+  "Freinsheim": 22,
+  "Flörsheim-Dalsheim": 27,
+  "Biedesheim": 27,
+  "Lautersheim": 27,
+  "Kerzenheim": 27,
+  "Steinborn": 27,
+  "Ramsen": 27,
+  "Wattenheim": 27,
+  "Carlsberg": 27,
+  "Weisenheim am Sand": 27,
+  "Kallstadt": 27,
+  "Leistadt": 27
+},
+  "streets": [
+    ["Ebertsheimer Weg", "Grünstadt", "https://www.gruenstadt.de/unsere-stadt/bauen-planen-wohnen/bebauungsplaene/laufende-verfahren/bebauungsplan-am-bergel-abschnitt-1/bebauungsplan-planzeichnung-08-2025.pdf?cid=itm"],
+    ["Gerbergasse", "Asselheim", "https://www.gruenstadt.de/unsere-stadt/bauen-planen-wohnen/bebauungsplaene/asselheim/"],
+    ["Am Graben", "Asselheim"],
+    ["Am Kreuz", "Asselheim"],
+    ["Amselweg", "Asselheim"],
+    ["Auf dem Leimen", "Asselheim"],
+    ["Auf der Setz", "Asselheim"],
+    ["Bacchusweg", "Asselheim"],
+    ["Battenbühlstraße", "Asselheim"],
+    ["Burgunderstraße", "Asselheim"],
+    ["Dornfelderstraße", "Asselheim"],
+    ["Drosselweg", "Asselheim"],
+    ["Eistalstraße", "Asselheim"],
+    ["Fasanenweg", "Asselheim"],
+    ["Grünstadter Straße", "Asselheim"],
+    ["Holzweg", "Asselheim"],
+    ["Im Auweg", "Asselheim"],
+    ["Kappelstraße", "Asselheim"],
+    ["Kernerstraße", "Asselheim"],
+    ["Langgasse", "Asselheim"],
+    ["Lerchenweg", "Asselheim"],
+    ["Meisenweg", "Asselheim"],
+    ["Neumühle", "Asselheim"],
+    ["Ostergasse", "Asselheim"],
+    ["Pfarrer-Bauer-Straße", "Asselheim"],
+    ["Portugieserweg", "Asselheim"],
+    ["Rieslingstraße", "Asselheim"],
+    ["Schloßstraße", "Asselheim"],
+    ["Schwalbenweg", "Asselheim"],
+    ["Silvanerstraße", "Asselheim"],
+    ["Starenweg", "Asselheim"],
+    ["Traminerweg", "Asselheim"],
+    ["Uhlandstraße", "Asselheim"],
+    ["Weinstraße", "Asselheim"],
+    ["Wormser Straße", "Asselheim"],
+    ["Ziegelhütte", "Asselheim"],
+    ["Adam-Opel-Straße", "Grünstadt"],
+    ["Albert-Schweitzer-Straße", "Grünstadt"],
+    ["Albsheimer Weg", "Grünstadt"],
+    ["Am Bahndamm", "Grünstadt"],
+    ["Am Bergel", "Grünstadt"],
+    ["Am Bildstock", "Grünstadt"],
+    ["Am Herrengang", "Grünstadt"],
+    ["Am Mertesheimer Weg", "Grünstadt"],
+    ["Am Neutor", "Grünstadt"],
+    ["Am Schmittengraben", "Grünstadt"],
+    ["Am Stadtgraben", "Grünstadt"],
+    ["Am Wehrhaus", "Grünstadt"],
+    ["Asselheimer Straße", "Grünstadt"],
+    ["Auf dem Leimen", "Grünstadt"],
+    ["Auf der Halde", "Grünstadt"],
+    ["Auf der Wart", "Grünstadt"],
+    ["Bahnhofstraße", "Grünstadt"],
+    ["Balthasar-Barban-Straße", "Grünstadt"],
+    ["Beethovenstraße", "Grünstadt"],
+    ["Beim Bergtor", "Grünstadt"],
+    ["Beim Hochgericht", "Grünstadt"],
+    ["Benzstraße", "Grünstadt"],
+    ["Berggasse", "Grünstadt"],
+    ["Berliner Straße", "Grünstadt"],
+    ["Bingerlochgasse", "Grünstadt"],
+    ["Bitzenstraße", "Grünstadt"],
+    ["Bleichgraben", "Grünstadt"],
+    ["Bordolloring", "Grünstadt"],
+    ["Brennofenpfad", "Grünstadt"],
+    ["Brucknerstraße", "Grünstadt"],
+    ["Brückenstraße", "Grünstadt"],
+    ["Bückelhaube", "Grünstadt"],
+    ["Carl-Zeiss-Straße", "Grünstadt"],
+    ["Colgensteiner Weg", "Grünstadt"],
+    ["Daimlerstraße", "Grünstadt"],
+    ["Dieselstraße", "Grünstadt"],
+    ["Dr.Hans-Böckler-Straße", "Grünstadt"],
+    ["Eingasse", "Grünstadt"],
+    ["Ernst-Reuter-Straße", "Grünstadt"],
+    ["Ferdinand-Porsche-Straße", "Grünstadt"],
+    ["Freundchenstraße", "Grünstadt"],
+    ["Friedhofstraße", "Grünstadt"],
+    ["Friedrich-Ebert-Straße", "Grünstadt"],
+    ["Friedrich-Pützer-Ring", "Grünstadt"],
+    ["Gebrüder-Grimm-Straße", "Grünstadt"],
+    ["Goethestraße", "Grünstadt"],
+    ["Gutenbergstraße", "Grünstadt"],
+    ["Hauptstraße", "Grünstadt"],
+    ["Haydnstraße", "Grünstadt"],
+    ["Heinestraße", "Grünstadt"],
+    ["Heinrich-Becker-Straße", "Grünstadt"],
+    ["Heinrich-Büssing-Straße", "Grünstadt"],
+    ["Heinrich-Prott-Straße", "Grünstadt"],
+    ["Im Freundchen", "Grünstadt"],
+    ["Im Zaunrücken", "Grünstadt"],
+    ["In der Haarschnur", "Grünstadt"],
+    ["In der Röth", "Grünstadt"],
+    ["In der Schleit", "Grünstadt"],
+    ["Industriestraße", "Grünstadt"],
+    ["Jahnstraße", "Grünstadt"],
+    ["Jakobstraße", "Grünstadt"],
+    ["Johann-Sebastian-Bach-Straße", "Grünstadt"],
+    ["Karl-Henschel-Straße", "Grünstadt"],
+    ["Karl-Walter-Straße", "Grünstadt"],
+    ["Kellergasse", "Grünstadt"],
+    ["Kirchheimer Straße", "Grünstadt"],
+    ["Kläranlage", "Grünstadt"],
+    ["Kolpingstraße", "Grünstadt"],
+    ["Kreuzerweg", "Grünstadt"],
+    ["Königsberger Straße", "Grünstadt"],
+    ["Lateinschulgasse", "Grünstadt"],
+    ["Lessingstraße", "Grünstadt"],
+    ["Lise-Meitner-Straße", "Grünstadt"],
+    ["Lisztstraße", "Grünstadt"],
+    ["Ludwig-Maier-Straße", "Grünstadt"],
+    ["Luitpoldplatz", "Grünstadt"],
+    ["Lämmergasse", "Grünstadt"],
+    ["Max-Planck-Straße", "Grünstadt"],
+    ["Maybachstraße", "Grünstadt"],
+    ["Michael-Mappes-Straße", "Grünstadt"],
+    ["Mozartstraße", "Grünstadt"],
+    ["Mörikestraße", "Grünstadt"],
+    ["Neugasse", "Grünstadt"],
+    ["Nordring", "Grünstadt"],
+    ["Oberer Bergelweg", "Grünstadt"],
+    ["Obergasse", "Grünstadt"],
+    ["Obersülzer Straße", "Grünstadt"],
+    ["Ochsengasse", "Grünstadt"],
+    ["Otto-Fliesen-Straße", "Grünstadt"],
+    ["Parkweg", "Grünstadt"],
+    ["Peter-Heisel-Weg", "Grünstadt"],
+    ["Pfad am Brennofen", "Grünstadt"],
+    ["Pfortmüllerstraße", "Grünstadt"],
+    ["Philipp-Kranz-Straße", "Grünstadt"],
+    ["Philipp-Rüttger-Straße", "Grünstadt"],
+    ["Poststraße", "Grünstadt"],
+    ["Richard-Wagner-Straße", "Grünstadt"],
+    ["Ringgasse", "Grünstadt"],
+    ["Robert-Bosch-Straße", "Grünstadt"],
+    ["Rosenweg", "Grünstadt", "https://www.gruenstadt.de/rathaus-politik/politik/wahlen/stimmbezirke/"],
+    ["Saarlandstraße", "Grünstadt"],
+    ["Sausenheimer Straße", "Grünstadt"],
+    ["Schillerplatz", "Grünstadt"],
+    ["Schillerstraße", "Grünstadt"],
+    ["Schlachthofstraße", "Grünstadt"],
+    ["Schlesingerstraße", "Grünstadt"],
+    ["Schubertstraße", "Grünstadt"],
+    ["Schumannstraße", "Grünstadt"],
+    ["Seekatzstraße", "Grünstadt"],
+    ["Siebenpfeifferstraße", "Grünstadt"],
+    ["Sieghof", "Grünstadt"],
+    ["Siemensstraße", "Grünstadt"],
+    ["Spitalstraße", "Grünstadt"],
+    ["St.-Kilian-Straße", "Grünstadt"],
+    ["St.-Peter-Straße", "Grünstadt"],
+    ["Stadtpark", "Grünstadt"],
+    ["Südring", "Grünstadt"],
+    ["Talweg", "Grünstadt"],
+    ["Taubengartenhohl", "Grünstadt"],
+    ["Theodor-Storm-Straße", "Grünstadt"],
+    ["Tiefenthaler Straße", "Grünstadt"],
+    ["Tulpenweg", "Grünstadt"],
+    ["Turnstraße", "Grünstadt"],
+    ["Uhlandstraße", "Grünstadt"],
+    ["Verladeplatz", "Grünstadt"],
+    ["Von-Ketteler-Ring", "Grünstadt"],
+    ["Von-Pfeil-Straße", "Grünstadt"],
+    ["Vorstadt", "Grünstadt"],
+    ["Weedengasse", "Grünstadt"],
+    ["Westlicher Graben", "Grünstadt"],
+    ["Westring", "Grünstadt"],
+    ["Wilhelm-Hauff-Straße", "Grünstadt"],
+    ["Wirth-Straße", "Grünstadt"],
+    ["Zeppelinstraße", "Grünstadt"],
+    ["Östlicher Graben", "Grünstadt"],
+    ["Am Finkenbach", "Sausenheim"],
+    ["Am alten Bahnhof", "Sausenheim"],
+    ["Angelgasse", "Sausenheim"],
+    ["Auf der Hohl", "Sausenheim"],
+    ["Birkenweg", "Sausenheim"],
+    ["Brückelweg", "Sausenheim"],
+    ["Buchenweg", "Sausenheim"],
+    ["Bärenbrunnenstraße", "Sausenheim"],
+    ["Böhlgasse", "Sausenheim"],
+    ["Dahlienweg", "Sausenheim"],
+    ["Donnersbergstraße", "Sausenheim"],
+    ["Drachenfelsstraße", "Sausenheim"],
+    ["Erlenweg", "Sausenheim"],
+    ["Freundchenstraße", "Sausenheim"],
+    ["Hintergasse", "Sausenheim"],
+    ["Hochgewanne", "Sausenheim"],
+    ["In den Maulgärten", "Sausenheim"],
+    ["In der Osterau", "Sausenheim"],
+    ["Kaiserhecke", "Sausenheim"],
+    ["Kalkerde", "Sausenheim"],
+    ["Kalmitstraße", "Sausenheim"],
+    ["Kastanienweg", "Sausenheim"],
+    ["Kirchgasse", "Sausenheim"],
+    ["Klostergarten", "Sausenheim"],
+    ["Krummlandweg", "Sausenheim"],
+    ["Leiningerstraße", "Sausenheim"],
+    ["Leuchtenbergstraße", "Sausenheim"],
+    ["Lindenweg", "Sausenheim"],
+    ["Peterskopfstraße", "Sausenheim"],
+    ["Rahnfelsstraße", "Sausenheim"],
+    ["Raiffeisenstraße", "Sausenheim"],
+    ["Rathausstraße", "Sausenheim"],
+    ["Rosenweg", "Sausenheim"],
+    ["Rossbergstraße", "Sausenheim"],
+    ["Schloßbergstraße", "Sausenheim"],
+    ["Schulgasse", "Sausenheim"],
+    ["Silchergasse", "Sausenheim"],
+    ["Trifelsstraße", "Sausenheim"],
+    ["Triftweg", "Sausenheim"],
+    ["Ulmenweg", "Sausenheim"],
+    ["Untertorstraße", "Sausenheim"],
+    ["Veilchenweg", "Sausenheim"],
+    ["Weinbergstraße", "Sausenheim"],
+    ["Weinbietstraße", "Sausenheim"],
+    ["Am Goldberg", "Quirnheim"],
+    ["Am Klöttstein", "Quirnheim"],
+    ["Am Pumpenhaus", "Quirnheim"],
+    ["Asselheimer Weg", "Quirnheim"],
+    ["Ebertsheimer Straße", "Quirnheim"],
+    ["Eistalstraße", "Quirnheim"],
+    ["Friedhofweg", "Quirnheim"],
+    ["Hollergasse", "Quirnheim"],
+    ["Im Bieth", "Quirnheim"],
+    ["Im Kirchgarten", "Quirnheim"],
+    ["Kindenheimer Straße", "Quirnheim"],
+    ["Kleine Wust", "Quirnheim"],
+    ["Langgasse", "Quirnheim"],
+    ["Lindenstraße", "Quirnheim"],
+    ["Mertesheimer Weg", "Quirnheim"],
+    ["Neue Straße", "Quirnheim"],
+    ["Otto-Lilienthal-Straße", "Quirnheim"],
+    ["Ritter-Merz-Straße", "Quirnheim"],
+    ["Schmittgasse", "Quirnheim"],
+    ["Talblick", "Quirnheim"],
+    ["Talweg", "Quirnheim"],
+    ["Tanzgasse", "Quirnheim"],
+    ["Vor der Pforte", "Quirnheim"],
+    ["Weedegasse", "Quirnheim"],
+    ["Allwendstraße", "Kindenheim"],
+    ["Am Gatterlosenberg", "Kindenheim"],
+    ["Am Kinderbach", "Kindenheim"],
+    ["Am Kirchrain", "Kindenheim"],
+    ["Am Mühlweg", "Kindenheim"],
+    ["Am Sonnenberg", "Kindenheim"],
+    ["Andingstraße", "Kindenheim"],
+    ["Backhausgasse", "Kindenheim"],
+    ["Bergstraße", "Kindenheim"],
+    ["Borngasse", "Kindenheim"],
+    ["Burgweg", "Kindenheim"],
+    ["Frohnackerweg", "Kindenheim"],
+    ["Galoppgasse", "Kindenheim"],
+    ["Grabenweg", "Kindenheim"],
+    ["Gässelstraße", "Kindenheim"],
+    ["Hauptstraße", "Kindenheim"],
+    ["Im Rosengarten", "Kindenheim"],
+    ["Judenberg", "Kindenheim"],
+    ["Kellergasse", "Kindenheim"],
+    ["Krautbachgasse", "Kindenheim"],
+    ["Michelsberg", "Kindenheim"],
+    ["Neugasse", "Kindenheim"],
+    ["Raiffeisenstraße", "Kindenheim"],
+    ["Schulstraße", "Kindenheim"],
+    ["Triftstraße", "Kindenheim"],
+    ["Alemannenstraße", "Bockenheim"],
+    ["Am Arrasgraben", "Bockenheim"],
+    ["Am Bechtrain", "Bockenheim"],
+    ["Am Kindergarten", "Bockenheim"],
+    ["Am Mittelhof", "Bockenheim"],
+    ["Am Sonnenberg", "Bockenheim"],
+    ["Am Steinborner Graben", "Bockenheim"],
+    ["Am alten Mühlweg", "Bockenheim"],
+    ["An der Leiselbach", "Bockenheim"],
+    ["An der Schlosstreppe", "Bockenheim"],
+    ["Anemonenweg", "Bockenheim"],
+    ["Auf dem Heyer", "Bockenheim"],
+    ["Auf dem Hübel", "Bockenheim"],
+    ["Ballheimer Weg", "Bockenheim"],
+    ["Beethovenstraße", "Bockenheim"],
+    ["Bleichstraße", "Bockenheim"],
+    ["Bugostraße", "Bockenheim"],
+    ["Burggraben", "Bockenheim"],
+    ["Burgundenstraße", "Bockenheim"],
+    ["Frankenstraße", "Bockenheim"],
+    ["Gartenstraße", "Bockenheim"],
+    ["General-Kullmer-Straße", "Bockenheim"],
+    ["Goethestraße", "Bockenheim"],
+    ["Gotenstraße", "Bockenheim"],
+    ["Haldenweg", "Bockenheim"],
+    ["Hollergasse", "Bockenheim"],
+    ["Im Brecht", "Bockenheim"],
+    ["Im Brübel", "Bockenheim"],
+    ["Im Finkenschlag", "Bockenheim"],
+    ["Jakob-Böshenz-Straße", "Bockenheim"],
+    ["Jakob-Kautz-Straße", "Bockenheim"],
+    ["Kellereistraße", "Bockenheim"],
+    ["Kellergässchen", "Bockenheim"],
+    ["Keltenstraße", "Bockenheim"],
+    ["Kindenheimer Straße", "Bockenheim"],
+    ["Kirchgasse", "Bockenheim"],
+    ["Kolpingstraße", "Bockenheim"],
+    ["Leininger Ring", "Bockenheim"],
+    ["Lerchenstraße", "Bockenheim"],
+    ["Margreider Straße", "Bockenheim"],
+    ["Meisenweg", "Bockenheim"],
+    ["Nibelungenstraße", "Bockenheim"],
+    ["Oberer Graben", "Bockenheim"],
+    ["Obrigheimer Straße", "Bockenheim"],
+    ["Offsteiner Betonstraße", "Bockenheim"],
+    ["Offsteiner Weg", "Bockenheim"],
+    ["Pestalozzistraße", "Bockenheim"],
+    ["Pfarrgarten", "Bockenheim"],
+    ["Riedweg", "Bockenheim"],
+    ["Rosenstraße", "Bockenheim"],
+    ["Römerstraße", "Bockenheim"],
+    ["Salhof", "Bockenheim"],
+    ["Schiffergasse", "Bockenheim"],
+    ["Schillerstraße", "Bockenheim"],
+    ["Schloßweg", "Bockenheim"],
+    ["Sperlingweg", "Bockenheim"],
+    ["Spiegelpfad", "Bockenheim"],
+    ["Stiegelgasse", "Bockenheim"],
+    ["Sülzer Weg", "Bockenheim"],
+    ["Uhlandstraße", "Bockenheim"],
+    ["Ulmenweg", "Bockenheim"],
+    ["Unterer Graben", "Bockenheim"],
+    ["Weedegasse", "Bockenheim"],
+    ["Weiherweg", "Bockenheim"],
+    ["Weinstraße", "Bockenheim"],
+    ["Weißenborner Weg", "Bockenheim"],
+    ["Wichernstraße", "Bockenheim"],
+    ["Am Hettenheimer Weg", "Ebertsheim"],
+    ["Am Rechacker", "Ebertsheim"],
+    ["Bahnhofstraße", "Ebertsheim"],
+    ["Bergstraße", "Ebertsheim"],
+    ["Blumenstraße", "Ebertsheim"],
+    ["Eduard-Mann-Straße", "Ebertsheim"],
+    ["Eisenberger Straße", "Ebertsheim"],
+    ["Gartenstraße", "Ebertsheim"],
+    ["Hallenstraße", "Ebertsheim"],
+    ["Hauptstraße", "Ebertsheim"],
+    ["In den Apfelgärten", "Ebertsheim"],
+    ["In den Kappesgärten", "Ebertsheim"],
+    ["Kerzenheimer Straße", "Ebertsheim"],
+    ["Kirchgasse", "Ebertsheim"],
+    ["Kronenmühle", "Ebertsheim"],
+    ["Königsring", "Ebertsheim"],
+    ["Langgartenstraße", "Ebertsheim"],
+    ["Lautersheimer Straße", "Ebertsheim"],
+    ["Leininger Straße", "Ebertsheim"],
+    ["Lindenstraße", "Ebertsheim"],
+    ["Mertesheimer Straße", "Ebertsheim"],
+    ["Neugasse", "Ebertsheim"],
+    ["Ostring", "Ebertsheim"],
+    ["Pfarrgasse", "Ebertsheim"],
+    ["Rathausstraße", "Ebertsheim"],
+    ["Riedstraße", "Ebertsheim"],
+    ["Ringstraße", "Ebertsheim"],
+    ["Rodenbacher Straße", "Ebertsheim"],
+    ["Tiefenthaler Straße", "Ebertsheim"],
+    ["Turnstraße", "Ebertsheim"],
+    ["Wassergasse", "Ebertsheim"],
+    ["Wiesenstraße", "Ebertsheim"],
+    ["Wormser Gasse", "Ebertsheim"],
+    ["An der Oberwiese", "Mertesheim"],
+    ["Bahnhofstraße", "Mertesheim"],
+    ["Eistalstraße", "Mertesheim"],
+    ["Grüner Weg", "Mertesheim"],
+    ["Grünstadter Weg", "Mertesheim"],
+    ["Hauptstraße", "Mertesheim"],
+    ["Hintergasse", "Mertesheim"],
+    ["Holzweg", "Mertesheim"],
+    ["Leininger Pfad", "Mertesheim"],
+    ["Mühlweg", "Mertesheim"],
+    ["Neuer Weg", "Mertesheim"],
+    ["Obergasse", "Mertesheim"],
+    ["St.-Valentin-Straße", "Mertesheim"],
+    ["Albsheimer Hauptstraße", "Albsheim"],
+    ["Alte Ziegelei", "Albsheim"],
+    ["Am Dorf", "Albsheim"],
+    ["Am Römischen Pfad", "Albsheim"],
+    ["Bachgasse", "Albsheim"],
+    ["Bahnhofstraße", "Albsheim"],
+    ["Birkenweg", "Albsheim"],
+    ["Heidesheimer Straße", "Albsheim"],
+    ["Krausmühle", "Albsheim"],
+    ["Kuhgasse", "Albsheim"],
+    ["Ostergasse", "Albsheim"],
+    ["Schlegelweg", "Albsheim"],
+    ["Weidenweg", "Albsheim"],
+    ["Weinstraße", "Albsheim"],
+    ["Akazienweg", "Colgenstein"],
+    ["Buchenweg", "Colgenstein"],
+    ["Colgensteiner Bahnhofstraße", "Colgenstein"],
+    ["Dirmsteiner Weg", "Colgenstein"],
+    ["Eichenweg", "Colgenstein"],
+    ["Grünstadter Straße", "Colgenstein"],
+    ["Hans-Stein-Siedlung", "Colgenstein"],
+    ["Heidesheimer Hauptstraße", "Colgenstein"],
+    ["Herrnhof", "Colgenstein"],
+    ["Im Baumgarten", "Colgenstein"],
+    ["Kastanienweg", "Colgenstein"],
+    ["Kirchstraße", "Colgenstein"],
+    ["Rosenweg", "Colgenstein"],
+    ["Schloss-Straße", "Colgenstein"],
+    ["Schloßmühle", "Colgenstein"],
+    ["Sülzer Weg", "Colgenstein"],
+    ["An der alten Scheune", "Obrigheim"],
+    ["Beethovenstraße", "Obrigheim"],
+    ["Bockenheimer Straße", "Obrigheim"],
+    ["Colgensteiner Bahnhofstraße", "Obrigheim"],
+    ["Goethestraße", "Obrigheim"],
+    ["Große Hohl", "Obrigheim"],
+    ["Hauptstraße", "Obrigheim"],
+    ["Haydnstraße", "Obrigheim"],
+    ["Hinter den Häusern", "Obrigheim"],
+    ["Jahnstraße", "Obrigheim"],
+    ["Kellergasse", "Obrigheim"],
+    ["Mozartstraße", "Obrigheim"],
+    ["Mühlstraße", "Obrigheim"],
+    ["Neue Seitenstraße", "Obrigheim"],
+    ["Ostring", "Obrigheim"],
+    ["Richard-Wagner-Straße", "Obrigheim"],
+    ["Schillerstraße", "Obrigheim"],
+    ["Schlittweg", "Obrigheim"],
+    ["Schubertstraße", "Obrigheim"],
+    ["Wormser Straße", "Obrigheim"],
+    ["Akazienweg", "Heidesheim"],
+    ["Buchenweg", "Heidesheim"],
+    ["Colgensteiner Bahnhofstraße", "Heidesheim"],
+    ["Dirmsteiner Weg", "Heidesheim"],
+    ["Eichenweg", "Heidesheim"],
+    ["Grünstadter Straße", "Heidesheim"],
+    ["Hans-Stein-Siedlung", "Heidesheim"],
+    ["Heidesheimer Hauptstraße", "Heidesheim"],
+    ["Herrnhof", "Heidesheim"],
+    ["Im Baumgarten", "Heidesheim"],
+    ["Kastanienweg", "Heidesheim"],
+    ["Kirchstraße", "Heidesheim"],
+    ["Rosenweg", "Heidesheim"],
+    ["Schloss-Straße", "Heidesheim"],
+    ["Schloßmühle", "Heidesheim"],
+    ["Sülzer Weg", "Heidesheim"],
+    ["Alter Sportplatz", "Obersülzen"],
+    ["Am Kirschbaum", "Obersülzen"],
+    ["Am Zollstock", "Obersülzen"],
+    ["An der Kirche", "Obersülzen"],
+    ["An der Platzmauer", "Obersülzen"],
+    ["Dirmsteiner Straße", "Obersülzen"],
+    ["Grünstadter Straße", "Obersülzen"],
+    ["Hauptstraße", "Obersülzen"],
+    ["Hinter den Gärten", "Obersülzen"],
+    ["Karlbacher Weg", "Obersülzen"],
+    ["Kirchgasse", "Obersülzen"],
+    ["Klappersteig", "Obersülzen"],
+    ["Laumersheimer Straße", "Obersülzen"],
+    ["Neunmärkerei", "Obersülzen"],
+    ["Neuweg", "Obersülzen"],
+    ["Stumpfwaldstraße", "Obersülzen"],
+    ["Wormser Weg", "Obersülzen"],
+    ["Östlicher Pfad", "Obersülzen"],
+    ["Ahornweg", "Tiefenthal"],
+    ["Auf der Hub", "Tiefenthal"],
+    ["Bahnhofstraße", "Tiefenthal"],
+    ["Ebertsheimer Weg", "Tiefenthal"],
+    ["Eidechsenweg", "Tiefenthal"],
+    ["Gartenweg", "Tiefenthal"],
+    ["Hauptstraße", "Tiefenthal"],
+    ["Hintergasse", "Tiefenthal"],
+    ["In den Birkengärten", "Tiefenthal"],
+    ["In der Muld", "Tiefenthal"],
+    ["Jahnstraße", "Tiefenthal"],
+    ["Leininger Weg", "Tiefenthal"],
+    ["Nackterweg", "Tiefenthal"],
+    ["Ostring", "Tiefenthal"],
+    ["St.-Georg-Weg", "Tiefenthal"],
+    ["St.Bernhardstraße", "Tiefenthal"],
+    ["Weedstraße", "Tiefenthal"],
+    ["Adolf-Kolping-Straße", "Dirmstein"],
+    ["Affenstein", "Dirmstein"],
+    ["Am Affenstein", "Dirmstein", "https://www.vg-l.de/medien/dokumente-1/klimaschutz/181127-dirmstein-bericht-final.pdf?cid=yy"],
+    ["Am Altbach", "Dirmstein"],
+    ["Am Herrgottsacker", "Dirmstein"],
+    ["Am Kirchenpfad", "Dirmstein"],
+    ["Am Mandelpfad", "Dirmstein"],
+    ["Am Sporacker", "Dirmstein"],
+    ["Am Zollhaus", "Dirmstein"],
+    ["Am alten Speicher", "Dirmstein"],
+    ["Amselweg", "Dirmstein"],
+    ["Apotheker-Hummel-Straße", "Dirmstein"],
+    ["Bahnhofstraße", "Dirmstein"],
+    ["Balthasar-Neumann-Straße", "Dirmstein"],
+    ["Bannhügelweg", "Dirmstein"],
+    ["Berliner Straße", "Dirmstein"],
+    ["Bleichstraße", "Dirmstein"],
+    ["Bodelschwinghstraße", "Dirmstein"],
+    ["Burgunderstraße", "Dirmstein"],
+    ["Caspar-Lerch-Straße", "Dirmstein"],
+    ["Erich-Otto-Weg", "Dirmstein"],
+    ["Flomersheimer Eck", "Dirmstein"],
+    ["Frankenweg", "Dirmstein"],
+    ["Friedhofstraße", "Dirmstein"],
+    ["Gerolsheimer Straße", "Dirmstein"],
+    ["Graf-Schönborn-Straße", "Dirmstein"],
+    ["Hauptstraße", "Dirmstein"],
+    ["Heppenheimer Weg", "Dirmstein"],
+    ["Herrengasse", "Dirmstein"],
+    ["Heuchelheimer Straße", "Dirmstein"],
+    ["Hofrat-Rießmann-Straße", "Dirmstein"],
+    ["Im Mühlgarten", "Dirmstein"],
+    ["Im Pflänzer", "Dirmstein"],
+    ["Im Sporgarten", "Dirmstein"],
+    ["In den Nachtgärten", "Dirmstein"],
+    ["In den Schlosswiesen", "Dirmstein"],
+    ["Kirchgasse", "Dirmstein"],
+    ["Laumersheimer Straße", "Dirmstein"],
+    ["Leininger Straße", "Dirmstein"],
+    ["Lessingstraße", "Dirmstein"],
+    ["Lindesheimer Straße", "Dirmstein"],
+    ["Lokalbahnstraße", "Dirmstein"],
+    ["Ludwig-Erhard-Straße", "Dirmstein"],
+    ["Marktstraße", "Dirmstein"],
+    ["Martin-Luther-Straße", "Dirmstein"],
+    ["Metzgergasse", "Dirmstein"],
+    ["Mitteltor", "Dirmstein"],
+    ["Mohngasse", "Dirmstein"],
+    ["Moriostraße", "Dirmstein"],
+    ["Mörschgasse", "Dirmstein"],
+    ["Mühlstraße", "Dirmstein"],
+    ["Neuöttinger Straße", "Dirmstein"],
+    ["Obersülzer Straße", "Dirmstein"],
+    ["Obertor", "Dirmstein"],
+    ["Offsteiner Straße", "Dirmstein"],
+    ["Paulushof", "Dirmstein"],
+    ["Peterskirchenweg", "Dirmstein"],
+    ["Raiffeisenstraße", "Dirmstein"],
+    ["Rat-Klingmann-Weg", "Dirmstein"],
+    ["Rebgartenweg", "Dirmstein"],
+    ["Rieslingstraße", "Dirmstein"],
+    ["Rossgemarkweg", "Dirmstein"],
+    ["Salzgasse", "Dirmstein"],
+    ["Schillerstraße", "Dirmstein"],
+    ["Schloßgasse", "Dirmstein"],
+    ["Schloßplatz", "Dirmstein"],
+    ["Silvanerstraße", "Dirmstein"],
+    ["Spormühlenweg", "Dirmstein"],
+    ["Sportplatzweg", "Dirmstein"],
+    ["Stahlbergstraße", "Dirmstein"],
+    ["Teichstraße", "Dirmstein"],
+    ["Von Brühlstraße", "Dirmstein"],
+    ["Von-Goethe-Straße", "Dirmstein"],
+    ["Wormser Weg", "Dirmstein"],
+    ["Wörschberger Weg", "Dirmstein"],
+    ["Alte Malzfabrik", "Neuleiningen"],
+    ["Altleininger Weg", "Neuleiningen"],
+    ["Am Dreschplatz", "Neuleiningen"],
+    ["Am Goldberg", "Neuleiningen"],
+    ["Am Hinkelstein", "Neuleiningen"],
+    ["Am Höllpfad", "Neuleiningen"],
+    ["Am Kreuz", "Neuleiningen"],
+    ["Am alten Steinbruch", "Neuleiningen"],
+    ["An den Brunnengärten", "Neuleiningen"],
+    ["An den Gärten", "Neuleiningen"],
+    ["Berghohl", "Neuleiningen"],
+    ["Dr.-Konrad-Adenauer-Straße", "Neuleiningen"],
+    ["Frauental", "Neuleiningen"],
+    ["Friedrich-Ebert-Straße", "Neuleiningen"],
+    ["Haus Sonnenberg", "Neuleiningen"],
+    ["In den Schelmenäckern", "Neuleiningen"],
+    ["Kirchengasse", "Neuleiningen"],
+    ["Mittelgasse", "Neuleiningen"],
+    ["Nackterhof", "Neuleiningen"],
+    ["Nackterwäldchen", "Neuleiningen"],
+    ["Obergasse", "Neuleiningen"],
+    ["Sausenheimer Straße", "Neuleiningen"],
+    ["Schloßberg", "Neuleiningen"],
+    ["St.-Nikolaus-Straße", "Neuleiningen"],
+    ["St.Nicolaushof", "Neuleiningen"],
+    ["Steinhauerweg", "Neuleiningen"],
+    ["Süßenhof", "Neuleiningen"],
+    ["Talberg", "Neuleiningen"],
+    ["Talstraße", "Neuleiningen"],
+    ["Tiefenthaler Straße", "Neuleiningen"],
+    ["Untergasse", "Neuleiningen"],
+    ["Ahornweg", "Laumersheim"],
+    ["Am Auergraben", "Laumersheim"],
+    ["Am Mandelberg", "Laumersheim"],
+    ["Auf dem Graben", "Laumersheim"],
+    ["Binsenstraße", "Laumersheim"],
+    ["Burgstraße", "Laumersheim"],
+    ["Dirmsteiner Straße", "Laumersheim"],
+    ["Eckbachstraße", "Laumersheim"],
+    ["Erlenweg", "Laumersheim"],
+    ["Friedhofstraße", "Laumersheim"],
+    ["Großkarlbacher Straße", "Laumersheim"],
+    ["Hauptstraße", "Laumersheim"],
+    ["Heinestraße", "Laumersheim"],
+    ["Holzweg", "Laumersheim"],
+    ["Im Burggarten", "Laumersheim"],
+    ["Im Schloßgarten", "Laumersheim"],
+    ["Lessingstraße", "Laumersheim"],
+    ["Mühlstraße", "Laumersheim"],
+    ["Obersülzer Straße", "Laumersheim"],
+    ["Palmberg", "Laumersheim"],
+    ["Scheffelstraße", "Laumersheim"],
+    ["Schillerstraße", "Laumersheim"],
+    ["Schloss-Straße", "Laumersheim"],
+    ["Schulstraße", "Laumersheim"],
+    ["Von Goethestraße", "Laumersheim"],
+    ["Weidenmühle", "Laumersheim"],
+    ["Wiesenstraße", "Laumersheim"],
+    ["Zum Bürgerhaus", "Laumersheim"],
+    ["Am Friedhof", "Kirchheim"],
+    ["Am Grünborn", "Kirchheim"],
+    ["Am Mühlbach", "Kirchheim"],
+    ["Bahnhofstraße", "Kirchheim"],
+    ["Bissersheimer Straße", "Kirchheim"],
+    ["Blockhaus", "Kirchheim"],
+    ["Friederich-Diffine-Straße", "Kirchheim"],
+    ["Hintergasse", "Kirchheim"],
+    ["Hollergasse", "Kirchheim"],
+    ["Im Bügen", "Kirchheim"],
+    ["Im Kiesling", "Kirchheim"],
+    ["Im Seechen", "Kirchheim"],
+    ["Jakobsstraße", "Kirchheim"],
+    ["Kellerstraße", "Kirchheim"],
+    ["Kleinkarlbacher Straße", "Kirchheim"],
+    ["Kochstraße", "Kirchheim"],
+    ["Lindenhof", "Kirchheim"],
+    ["Mahlerweinstraße", "Kirchheim"],
+    ["Mittlerer Waldweg", "Kirchheim"],
+    ["Mühlstraße", "Kirchheim"],
+    ["Oberer Waldweg", "Kirchheim"],
+    ["Ostring", "Kirchheim"],
+    ["Portugieserweg", "Kirchheim"],
+    ["Quirngasse", "Kirchheim"],
+    ["Rieslingweg", "Kirchheim"],
+    ["Rosengartenweg", "Kirchheim"],
+    ["Römerstraße", "Kirchheim"],
+    ["Rückgasse", "Kirchheim"],
+    ["Schleußingerstraße", "Kirchheim"],
+    ["Schloßhof", "Kirchheim"],
+    ["Schulgasse", "Kirchheim"],
+    ["Silvanerweg", "Kirchheim"],
+    ["Triftweg", "Kirchheim"],
+    ["Uhrigstraße", "Kirchheim"],
+    ["Unterer Waldweg", "Kirchheim"],
+    ["Verladestraße", "Kirchheim"],
+    ["Weinstraße Nord", "Kirchheim"],
+    ["Weinstraße Süd", "Kirchheim"],
+    ["Weisenheimer Straße", "Kirchheim"],
+    ["Westring", "Kirchheim"],
+    ["Ziegelhütte", "Kirchheim"],
+    ["Am Erlenbrunnen", "Kleinkarlbach"],
+    ["Am Frauländchen", "Kleinkarlbach"],
+    ["Am Kelleracker", "Kleinkarlbach"],
+    ["Am Krumbach", "Kleinkarlbach"],
+    ["Am Langenstein", "Kleinkarlbach"],
+    ["Am Sportplatz", "Kleinkarlbach"],
+    ["Aussiedlerhof", "Kleinkarlbach"],
+    ["Bachweg", "Kleinkarlbach"],
+    ["Backhohl", "Kleinkarlbach"],
+    ["Borngasse", "Kleinkarlbach"],
+    ["Flurystraße", "Kleinkarlbach"],
+    ["Friedrich-Tisch-Straße", "Kleinkarlbach"],
+    ["Hauptstraße", "Kleinkarlbach"],
+    ["Hinter den Gärten", "Kleinkarlbach"],
+    ["Hübel", "Kleinkarlbach"],
+    ["In der Lehmenkaut", "Kleinkarlbach"],
+    ["Jahnstraße", "Kleinkarlbach"],
+    ["Mühlenstraße", "Kleinkarlbach"],
+    ["Neuer Weg", "Kleinkarlbach"],
+    ["Partschinser Straße", "Kleinkarlbach"],
+    ["Röthenbacher Straße", "Kleinkarlbach"],
+    ["Schleifweg", "Kleinkarlbach"],
+    ["Werner-Spieß-Straße", "Kleinkarlbach"],
+    ["Am Kreuz", "Dackenheim"],
+    ["Am Mönchshof", "Dackenheim"],
+    ["Am Rappengarten", "Dackenheim"],
+    ["Bitzgrunder Weg", "Dackenheim"],
+    ["Freinsheimer Straße", "Dackenheim"],
+    ["Friedhofstraße", "Dackenheim"],
+    ["Herxheimer Straße", "Dackenheim"],
+    ["Im Fasanengarten", "Dackenheim"],
+    ["In den Weinbergen", "Dackenheim"],
+    ["In der Mandelröth", "Dackenheim"],
+    ["Kirchenstraße", "Dackenheim"],
+    ["Kirchheimer Straße", "Dackenheim"],
+    ["Schulstraße", "Dackenheim"],
+    ["Sommerbachstraße", "Dackenheim"],
+    ["Weisenheimer Straße", "Dackenheim"],
+    ["Akazienweg", "Großkarlbach"],
+    ["Am Marktberg", "Großkarlbach"],
+    ["Am Osterberg", "Großkarlbach"],
+    ["Am Sportplatz", "Großkarlbach"],
+    ["Am Storchenpfad", "Großkarlbach"],
+    ["Bissersheimer Straße", "Großkarlbach"],
+    ["Brenngasse", "Großkarlbach"],
+    ["Friedhofweg", "Großkarlbach"],
+    ["Gerolsheimer Straße", "Großkarlbach"],
+    ["Gutedelweg", "Großkarlbach"],
+    ["Gänseeck", "Großkarlbach"],
+    ["Hauptstraße", "Großkarlbach"],
+    ["Heyer Hohl", "Großkarlbach"],
+    ["In den Weiherwiesen", "Großkarlbach"],
+    ["Kohlweg", "Großkarlbach"],
+    ["Kreuzweg", "Großkarlbach"],
+    ["Kändelgasse", "Großkarlbach"],
+    ["Lauergasse", "Großkarlbach"],
+    ["Laumersheimer Straße", "Großkarlbach"],
+    ["Marktbergstraße", "Großkarlbach"],
+    ["Mühlweg", "Großkarlbach"],
+    ["Oberer Wiesenrech", "Großkarlbach"],
+    ["Rieslingstraße", "Großkarlbach"],
+    ["Schellenpfad", "Großkarlbach"],
+    ["Schliffgasse", "Großkarlbach"],
+    ["Silvanerstraße", "Großkarlbach"],
+    ["Simonsgasse", "Großkarlbach"],
+    ["Sperbergasse", "Großkarlbach"],
+    ["Unterer Lustgarten", "Großkarlbach"],
+    ["Unterer Wiesenrech", "Großkarlbach"],
+    ["Zum Weinberg", "Großkarlbach"],
+    ["Zur Bleiche", "Großkarlbach"],
+    ["Am Büschel", "Bobenheim"],
+    ["Am Kirschberg", "Bobenheim"],
+    ["Am Plottvogel", "Bobenheim"],
+    ["Am Rebstöckel", "Bobenheim"],
+    ["Am Steinbruch", "Bobenheim"],
+    ["Am Stümpel", "Bobenheim"],
+    ["Amselweg", "Bobenheim"],
+    ["Auf der Ritsch", "Bobenheim"],
+    ["Auf der Schach", "Bobenheim"],
+    ["Battenberger Weg", "Bobenheim"],
+    ["Bergpfad", "Bobenheim"],
+    ["Blütenweg", "Bobenheim"],
+    ["Büschelberg", "Bobenheim"],
+    ["Dackenheimer Weg", "Bobenheim"],
+    ["Friedhofstraße", "Bobenheim"],
+    ["Goldberg", "Bobenheim"],
+    ["Haardtweg", "Bobenheim"],
+    ["Hinter den Gärten", "Bobenheim"],
+    ["Im Pflänzer", "Bobenheim"],
+    ["Im Weibertal", "Bobenheim"],
+    ["Im Weinberg", "Bobenheim"],
+    ["Im Woogtal", "Bobenheim"],
+    ["In den Hahndornen", "Bobenheim"],
+    ["In den Obstgärten", "Bobenheim"],
+    ["In der Hohl", "Bobenheim"],
+    ["Jahnstraße", "Bobenheim"],
+    ["Kastanienweg", "Bobenheim"],
+    ["Kleinkarlbacher Straße", "Bobenheim"],
+    ["Leininger Straße", "Bobenheim"],
+    ["Mittelpfad", "Bobenheim"],
+    ["Tadelgern", "Bobenheim"],
+    ["Weisenheimer Straße", "Bobenheim"],
+    ["Zum Krummbach", "Bobenheim"],
+    ["Am Dörrling", "Herxheim"],
+    ["Am Felsenberg", "Herxheim"],
+    ["Am Goldberg", "Herxheim"],
+    ["Dackenheimer Weg", "Herxheim"],
+    ["Friedhofstraße", "Herxheim"],
+    ["Gartenstraße", "Herxheim"],
+    ["Hauptstraße", "Herxheim"],
+    ["Im Bellengarten", "Herxheim"],
+    ["Im Eulengeschrei", "Herxheim"],
+    ["Pfaffenhof", "Herxheim"],
+    ["Raiffeisenstraße", "Herxheim"],
+    ["Rebblütenweg", "Herxheim"],
+    ["Speyerer Straße", "Herxheim"],
+    ["Weinstraße", "Herxheim"],
+    ["Weisenheimer Straße", "Herxheim"],
+    ["Am Claudenstein", "Weisenheim am Berg"],
+    ["Am Hängel", "Weisenheim am Berg"],
+    ["Am Kirschberg", "Weisenheim am Berg"],
+    ["Am Köppel", "Weisenheim am Berg"],
+    ["Am Mahlstein", "Weisenheim am Berg"],
+    ["Am Nussbaum", "Weisenheim am Berg"],
+    ["Am Pfaffenweiher", "Weisenheim am Berg"],
+    ["Am Wingertsberg", "Weisenheim am Berg"],
+    ["Auf'm Kies", "Weisenheim am Berg"],
+    ["Bachweg", "Weisenheim am Berg"],
+    ["Berliner Straße", "Weisenheim am Berg"],
+    ["Bobenheimer Straße", "Weisenheim am Berg"],
+    ["Bobenheimer Weg", "Weisenheim am Berg"],
+    ["Bohnenpfad", "Weisenheim am Berg"],
+    ["Dackenheimer Weg", "Weisenheim am Berg"],
+    ["Friedhofstraße", "Weisenheim am Berg"],
+    ["Haalbergstraße", "Weisenheim am Berg"],
+    ["Hauptstraße", "Weisenheim am Berg"],
+    ["Herxheimer Straße", "Weisenheim am Berg"],
+    ["Im Eiertal", "Weisenheim am Berg"],
+    ["Im Ewignest", "Weisenheim am Berg"],
+    ["Im Langental", "Weisenheim am Berg"],
+    ["Im Mandelgarten", "Weisenheim am Berg"],
+    ["Im Vogelsang", "Weisenheim am Berg"],
+    ["Im Winkel", "Weisenheim am Berg"],
+    ["In der Au", "Weisenheim am Berg"],
+    ["In der Ortsflur", "Weisenheim am Berg"],
+    ["Jahnstraße", "Weisenheim am Berg"],
+    ["Johann-Georg-Lehmann-Straße", "Weisenheim am Berg"],
+    ["Johannes-Orttenburger-Straße", "Weisenheim am Berg"],
+    ["Karl-Gayer-Straße", "Weisenheim am Berg"],
+    ["Kirchgasse", "Weisenheim am Berg"],
+    ["Kirchheimer Straße", "Weisenheim am Berg"],
+    ["Kleine Weingasse", "Weisenheim am Berg"],
+    ["Leininger Pfad", "Weisenheim am Berg"],
+    ["Leistadter Straße", "Weisenheim am Berg"],
+    ["Ludwig-Seibel-Straße", "Weisenheim am Berg"],
+    ["Neumayerstraße", "Weisenheim am Berg"],
+    ["Neuweg", "Weisenheim am Berg"],
+    ["Niederdorla-Ring", "Weisenheim am Berg"],
+    ["Plauser Straße", "Weisenheim am Berg"],
+    ["Raiffeisenstraße", "Weisenheim am Berg"],
+    ["Sommerbachweg", "Weisenheim am Berg"],
+    ["St.-Gengoux-Straße", "Weisenheim am Berg"],
+    ["Südtiroler Ring", "Weisenheim am Berg"],
+    ["Waldstraße", "Weisenheim am Berg"],
+    ["Waldweg", "Weisenheim am Berg"],
+    ["Ahornweg", "Monsheim"],
+    ["Alzeyer Straße", "Monsheim"],
+    ["An den Mühlen", "Monsheim"],
+    ["Aussiedlerhöfe", "Monsheim"],
+    ["Außerhalb", "Monsheim"],
+    ["Bacchusstraße", "Monsheim"],
+    ["Backhausgasse", "Monsheim"],
+    ["Bahnhofstraße", "Monsheim"],
+    ["Beethovenstraße", "Monsheim"],
+    ["Biengartenstraße", "Monsheim"],
+    ["Birkenstraße", "Monsheim"],
+    ["Bornstraße", "Monsheim"],
+    ["Buchenstraße", "Monsheim"],
+    ["Burgunderstraße", "Monsheim"],
+    ["Carl-Benz-Straße", "Monsheim"],
+    ["David-Möllinger-Straße", "Monsheim"],
+    ["Denkmalstraße", "Monsheim"],
+    ["Ernst-Ludwig-Straße", "Monsheim"],
+    ["Faberstraße", "Monsheim"],
+    ["Friedensstraße", "Monsheim"],
+    ["Galgenweg", "Monsheim"],
+    ["Gartenstadtstraße", "Monsheim"],
+    ["Gartenstraße", "Monsheim"],
+    ["Gerd-Heinz-Schilling-Straße", "Monsheim"],
+    ["Goethestraße", "Monsheim"],
+    ["Grabenstraße", "Monsheim"],
+    ["Hauptstraße", "Monsheim"],
+    ["Heinrich-v.-Gagern-Straße", "Monsheim"],
+    ["Heppenheimer Straße", "Monsheim"],
+    ["Hinkelsteinstraße", "Monsheim"],
+    ["Hinter dem Heckel", "Monsheim"],
+    ["Hofgut Holz", "Monsheim"],
+    ["Hofgut Wiesenmühle", "Monsheim"],
+    ["Jahnstraße", "Monsheim"],
+    ["Jakob-Finger-Straße", "Monsheim"],
+    ["Johann-Scherner-Straße", "Monsheim"],
+    ["Kaiser-Wilhelm-Straße", "Monsheim"],
+    ["Kastanienstraße", "Monsheim"],
+    ["Kriegsheimer Straße", "Monsheim"],
+    ["Leiningerstraße", "Monsheim"],
+    ["Lessingstraße", "Monsheim"],
+    ["Lindenstraße", "Monsheim"],
+    ["Lochpfad", "Monsheim"],
+    ["Metzgasse", "Monsheim"],
+    ["Moltkestraße", "Monsheim"],
+    ["Mozartstraße", "Monsheim"],
+    ["Mölsheimerstraße", "Monsheim"],
+    ["Mörstädter Straße", "Monsheim"],
+    ["Mühlgässchen", "Monsheim"],
+    ["Mühlstraße", "Monsheim"],
+    ["Nieder-Flörsheimer Straße", "Monsheim"],
+    ["Pfrimmbachstraße", "Monsheim"],
+    ["Pfrimmstraße", "Monsheim"],
+    ["Raiffeisenstraße", "Monsheim"],
+    ["Rathausstraße", "Monsheim"],
+    ["Rehhof", "Monsheim"],
+    ["Rieslingstraße", "Monsheim"],
+    ["Robert-Bosch-Straße", "Monsheim"],
+    ["Rosenstraße", "Monsheim"],
+    ["Rudolf-Diesel-Straße", "Monsheim"],
+    ["Ruländerstraße", "Monsheim"],
+    ["Römerstraße", "Monsheim"],
+    ["Schillerstraße", "Monsheim"],
+    ["Schlieberstadtstraße", "Monsheim"],
+    ["Schlosshohlstraße", "Monsheim"],
+    ["Schubertstraße", "Monsheim"],
+    ["Silberbergstraße", "Monsheim"],
+    ["Silcherstraße", "Monsheim"],
+    ["Silvanerstraße", "Monsheim"],
+    ["Traminerstraße", "Monsheim"],
+    ["Tränkgasse", "Monsheim"],
+    ["Uhlandstraße", "Monsheim"],
+    ["Ulmenstraße", "Monsheim"],
+    ["Wachenheimer Straße", "Monsheim"],
+    ["Wasserturmstraße", "Monsheim"],
+    ["Wiesenmühlenweg", "Monsheim"],
+    ["Woogstraße", "Monsheim"],
+    ["Wormser Straße", "Monsheim"],
+    ["Auf dem Gries", "Boßweiler"],
+    ["Hertlingshauser Straße", "Boßweiler"],
+    ["Rodenbacher Weg", "Boßweiler"],
+    ["St. Oswald", "Boßweiler"],
+    ["Albert-Schweitzer-Straße", "Eisenberg"],
+    ["Albert-Wilkes-Straße", "Eisenberg"],
+    ["Albrecht-Dürer-Straße", "Eisenberg"],
+    ["Alfred-Nobel-Straße", "Eisenberg"],
+    ["Am Gielbrunnen", "Eisenberg"],
+    ["Am Gärtchen", "Eisenberg"],
+    ["Am Hubacker", "Eisenberg"],
+    ["Am Kreuzhof", "Eisenberg"],
+    ["Am Marktplatz", "Eisenberg"],
+    ["Am Weinberg", "Eisenberg"],
+    ["August-Bebel-Straße", "Eisenberg"],
+    ["Bahnhofstraße", "Eisenberg"],
+    ["Baldocker Straße", "Eisenberg"],
+    ["Berliner Straße", "Eisenberg"],
+    ["Boschstraße", "Eisenberg"],
+    ["Bürgermeister-Becker-Straße", "Eisenberg"],
+    ["Bürgermeister-Diehl-Straße", "Eisenberg"],
+    ["Carl-Zeiss-Straße", "Eisenberg"],
+    ["Dr.-Kurt-Schumacher-Straße", "Eisenberg"],
+    ["Dr.-Semmelweis-Straße", "Eisenberg"],
+    ["Ebertsheimer Straße", "Eisenberg"],
+    ["Erlenhof", "Eisenberg"],
+    ["Frank-von-Müller-Straße", "Eisenberg"],
+    ["Friedenstraße", "Eisenberg"],
+    ["Friedrich-Ebert-Straße", "Eisenberg"],
+    ["Fritz-Kircher-Straße", "Eisenberg"],
+    ["Galgenberg", "Eisenberg"],
+    ["Gerhart-Hauptmann-Straße", "Eisenberg"],
+    ["Gienanthstraße", "Eisenberg"],
+    ["Glassinistraße", "Eisenberg"],
+    ["Goethestraße", "Eisenberg"],
+    ["Gustav-Heinemann-Ring", "Eisenberg"],
+    ["Gutenbergstraße", "Eisenberg"],
+    ["Hans-Böckler-Straße", "Eisenberg"],
+    ["Hauptstraße", "Eisenberg"],
+    ["Hermann-Graf-Straße", "Eisenberg"],
+    ["Hettenleidelheimer Straße", "Eisenberg"],
+    ["Im Böhling", "Eisenberg"],
+    ["Im Kindchestal", "Eisenberg"],
+    ["In den Geldäckern", "Eisenberg"],
+    ["In den Neun Morgen", "Eisenberg"],
+    ["In der Atzing", "Eisenberg"],
+    ["Industriestraße", "Eisenberg"],
+    ["Jahnstraße", "Eisenberg"],
+    ["Jakob-Schiffer-Straße", "Eisenberg"],
+    ["Karl-Marx-Straße", "Eisenberg"],
+    ["Kerzenheimer Straße", "Eisenberg"],
+    ["Kettelerstraße", "Eisenberg"],
+    ["Kinderdorfstraße", "Eisenberg"],
+    ["Kirchstraße", "Eisenberg"],
+    ["Konrad-Adenauer-Straße", "Eisenberg"],
+    ["Krämer", "Eisenberg"],
+    ["Käthe-Kollwitz-Straße", "Eisenberg"],
+    ["Lauberhof", "Eisenberg"],
+    ["Leininger Weg", "Eisenberg"],
+    ["Martin-Luther-Straße", "Eisenberg"],
+    ["Mühlstraße", "Eisenberg"],
+    ["Neustraße", "Eisenberg"],
+    ["Ochsenbusch", "Eisenberg"],
+    ["Ostlandstraße", "Eisenberg"],
+    ["Pestalozzistraße", "Eisenberg"],
+    ["Philipp-Mayer-Straße", "Eisenberg"],
+    ["Ramsener Straße", "Eisenberg"],
+    ["Ringstraße", "Eisenberg"],
+    ["Rinnengasse", "Eisenberg"],
+    ["Ripperter Straße", "Eisenberg"],
+    ["Robert-Koch-Straße", "Eisenberg"],
+    ["Rosenthaler Straße", "Eisenberg"],
+    ["Rot-Kreuz-Straße", "Eisenberg"],
+    ["Rudolf-Diesel-Straße", "Eisenberg"],
+    ["Römerstraße", "Eisenberg"],
+    ["Röntgenstraße", "Eisenberg"],
+    ["Saarlandstraße", "Eisenberg"],
+    ["Sandstraße", "Eisenberg"],
+    ["Sanvignes-Straße", "Eisenberg"],
+    ["Schillerstraße", "Eisenberg"],
+    ["Schulstraße", "Eisenberg"],
+    ["Seltenbach", "Eisenberg"],
+    ["Siemensstraße", "Eisenberg"],
+    ["Staufer Straße", "Eisenberg"],
+    ["Steinertstraße", "Eisenberg"],
+    ["Theaterstraße", "Eisenberg"],
+    ["Tiefenthaler Straße", "Eisenberg"],
+    ["Villaweg", "Eisenberg"],
+    ["Virchowstraße", "Eisenberg"],
+    ["Willy-Brandt-Straße", "Eisenberg"],
+    ["Wingertsberg", "Eisenberg"],
+    ["Wingertsbergstraße", "Eisenberg"],
+    ["Wormser Straße", "Eisenberg"],
+    ["Würzgasse", "Eisenberg"],
+    ["Albert-Schweitzer-Straße", "Offstein"],
+    ["Am Bahnhof", "Offstein"],
+    ["Am Bräumerweg", "Offstein"],
+    ["Am Hasenlauf", "Offstein"],
+    ["Am Kirchberg", "Offstein"],
+    ["Am Rebstock", "Offstein"],
+    ["Am Reißberg", "Offstein"],
+    ["Am Römerpfad", "Offstein"],
+    ["Bacchusweg", "Offstein"],
+    ["Bachgasse", "Offstein"],
+    ["Bahnhofstraße", "Offstein"],
+    ["Bergstraße", "Offstein"],
+    ["Berliner Ring", "Offstein"],
+    ["Burgunderweg", "Offstein"],
+    ["Colgensteiner Weg", "Offstein"],
+    ["Dirmsteiner Hohl", "Offstein"],
+    ["Dirmsteiner Weg", "Offstein"],
+    ["Engelsbergstraße", "Offstein"],
+    ["Friedhofsweg", "Offstein"],
+    ["Gerbereistraße", "Offstein"],
+    ["Goethestraße", "Offstein"],
+    ["Heinrich-Ordenstein-Straße", "Offstein"],
+    ["Hochstraße", "Offstein"],
+    ["Hohen-Sülzer Straße", "Offstein"],
+    ["Im Gotthelf", "Offstein"],
+    ["Im Kerner", "Offstein"],
+    ["In den Aspen", "Offstein"],
+    ["Jahnstraße", "Offstein"],
+    ["Joh.-Peter-Schneider-Straße", "Offstein"],
+    ["Kantstraße", "Offstein"],
+    ["Kapellenstraße", "Offstein"],
+    ["Kindergartenstraße", "Offstein"],
+    ["Lessingstraße", "Offstein"],
+    ["Lindesheimer Straße", "Offstein"],
+    ["Mozartstraße", "Offstein"],
+    ["Neuoffsteiner Straße", "Offstein"],
+    ["Pfeddersheimer Straße", "Offstein"],
+    ["Querstraße", "Offstein"],
+    ["Rosengartenmühle", "Offstein"],
+    ["Schillerstraße", "Offstein"],
+    ["Schneidergässchen", "Offstein"],
+    ["Schulstraße", "Offstein"],
+    ["Silvanerring", "Offstein"],
+    ["Stegmühle", "Offstein"],
+    ["Steinstraße", "Offstein"],
+    ["Tränkgasse", "Offstein"],
+    ["Turnerstraße", "Offstein"],
+    ["Weinarkaden Keth", "Offstein"],
+    ["Wormser Straße", "Offstein"],
+    ["Zum Weinberg", "Offstein"],
+    ["An den Kellern", "Hohensülzen"],
+    ["An der Pfarrwiese", "Hohensülzen"],
+    ["Außerhalb des Ortes", "Hohensülzen"],
+    ["Bahnhofstraße", "Hohensülzen"],
+    ["Bergstraße", "Hohensülzen"],
+    ["Gartenstraße", "Hohensülzen"],
+    ["Hauptstraße", "Hohensülzen"],
+    ["Hinter der Burg", "Hohensülzen"],
+    ["Hof Nettelbeck", "Hohensülzen"],
+    ["Im Striegel", "Hohensülzen"],
+    ["Kirchstraße", "Hohensülzen"],
+    ["Offsteiner Straße", "Hohensülzen"],
+    ["Pfeddersheimer Straße", "Hohensülzen"],
+    ["Querstraße", "Hohensülzen"],
+    ["Untere Bockenheimer Straße", "Hohensülzen"],
+    ["Wallstraße", "Hohensülzen"],
+    ["Wormser Straße", "Hohensülzen"],
+    ["Zellerweg", "Hohensülzen"],
+    ["Altleininger Straße", "Hettenleidelheim"],
+    ["Am Kreuzweg", "Hettenleidelheim"],
+    ["Am Schwimmbad", "Hettenleidelheim"],
+    ["Am Steinbruch", "Hettenleidelheim"],
+    ["Am Viehhof", "Hettenleidelheim"],
+    ["Backgasse", "Hettenleidelheim"],
+    ["Bahnhofstraße", "Hettenleidelheim"],
+    ["Brunnenwiesenstraße", "Hettenleidelheim"],
+    ["Bürgermeister-Schmidt-Straße", "Hettenleidelheim"],
+    ["Dr.-Konrad-Adenauer-Platz", "Hettenleidelheim"],
+    ["Ebertsheimer Weg", "Hettenleidelheim"],
+    ["Fabrikstraße", "Hettenleidelheim"],
+    ["Friedhofstraße", "Hettenleidelheim"],
+    ["Gartenstraße", "Hettenleidelheim"],
+    ["Gaswerkstraße", "Hettenleidelheim"],
+    ["HSH-Straße", "Hettenleidelheim"],
+    ["Hauptstraße", "Hettenleidelheim"],
+    ["Hennenhecke", "Hettenleidelheim"],
+    ["Im Park", "Hettenleidelheim"],
+    ["Im Sotter", "Hettenleidelheim"],
+    ["Im Windeck", "Hettenleidelheim"],
+    ["In den Dreißig Morgen", "Hettenleidelheim"],
+    ["In den Ransenäckern", "Hettenleidelheim"],
+    ["In der Union", "Hettenleidelheim"],
+    ["Kesselgraben", "Hettenleidelheim"],
+    ["Kirchenstraße", "Hettenleidelheim"],
+    ["Lauberweg", "Hettenleidelheim"],
+    ["Mittelhaide", "Hettenleidelheim"],
+    ["Nackterstraße", "Hettenleidelheim"],
+    ["Obergasse", "Hettenleidelheim"],
+    ["Oberhaide", "Hettenleidelheim"],
+    ["Peter-Schwalb I.-Straße", "Hettenleidelheim"],
+    ["Pfarrgasse", "Hettenleidelheim"],
+    ["Poststraße", "Hettenleidelheim"],
+    ["Ramser Straße", "Hettenleidelheim"],
+    ["Schamottestraße", "Hettenleidelheim"],
+    ["Schlossgasse", "Hettenleidelheim"],
+    ["Schulwiesengraben", "Hettenleidelheim"],
+    ["Staufer Weg", "Hettenleidelheim"],
+    ["Tiefenthaler Straße", "Hettenleidelheim"],
+    ["Turnhallenstraße", "Hettenleidelheim"],
+    ["Vizinalstraße", "Hettenleidelheim"],
+    ["Von-Winzingen-Straße", "Hettenleidelheim"],
+    ["Waldblick", "Hettenleidelheim"],
+    ["Wattenheimer Straße", "Hettenleidelheim"],
+    ["Westendstraße", "Hettenleidelheim"],
+    ["Altbachweg", "Gerolsheim"],
+    ["Am Hofstück", "Gerolsheim"],
+    ["Amselweg", "Gerolsheim"],
+    ["An der Weet", "Gerolsheim"],
+    ["An der Ziegelhütte", "Gerolsheim"],
+    ["Birkenstraße", "Gerolsheim"],
+    ["Burgunderweg", "Gerolsheim"],
+    ["Dalbergstraße", "Gerolsheim"],
+    ["Dirmsteiner Straße", "Gerolsheim"],
+    ["Dreizehn Morgen Nord", "Gerolsheim"],
+    ["Dreizehn Morgen Süd", "Gerolsheim"],
+    ["Drosselweg", "Gerolsheim"],
+    ["Eckbachweg", "Gerolsheim"],
+    ["Falterweg", "Gerolsheim"],
+    ["Fasanenstraße", "Gerolsheim"],
+    ["Finkenweg", "Gerolsheim"],
+    ["Fliederweg", "Gerolsheim"],
+    ["Gartenstraße", "Gerolsheim"],
+    ["Haardtstraße", "Gerolsheim"],
+    ["Hahnenweg", "Gerolsheim"],
+    ["Hauptstraße", "Gerolsheim"],
+    ["Herpfengasse", "Gerolsheim"],
+    ["Hintergasse", "Gerolsheim"],
+    ["In den Gärten", "Gerolsheim"],
+    ["Kalmitstraße", "Gerolsheim"],
+    ["Kirchenstraße", "Gerolsheim"],
+    ["Lerchengasse", "Gerolsheim"],
+    ["Nachtigallenstraße", "Gerolsheim"],
+    ["Neubergstraße", "Gerolsheim"],
+    ["Neugasse", "Gerolsheim"],
+    ["Obergasse", "Gerolsheim"],
+    ["Palmbergstraße", "Gerolsheim"],
+    ["Pfalzstraße", "Gerolsheim"],
+    ["Portugieserweg", "Gerolsheim"],
+    ["Rheinstraße", "Gerolsheim"],
+    ["Rieslingstraße", "Gerolsheim"],
+    ["Römerstraße", "Gerolsheim"],
+    ["Silvanerstraße", "Gerolsheim"],
+    ["Starenweg", "Gerolsheim"],
+    ["Stichelgasse", "Gerolsheim"],
+    ["Trifelsstraße", "Gerolsheim"],
+    ["Untergasse", "Gerolsheim"],
+    ["Weinbergstraße", "Gerolsheim"],
+    ["Weisenheimer Straße", "Gerolsheim"],
+    ["Willersinnstraße 2", "Gerolsheim"],
+    ["Am Fischerweg", "Heuchelheim"],
+    ["Am Schloß", "Heuchelheim"],
+    ["An der Bleiche", "Heuchelheim"],
+    ["Bahnhofstraße", "Heuchelheim"],
+    ["Breite Straße", "Heuchelheim"],
+    ["Dirmsteiner Straße", "Heuchelheim"],
+    ["Donnersbergstraße", "Heuchelheim"],
+    ["Dürkheimer Straße", "Heuchelheim"],
+    ["Eckbachring", "Heuchelheim"],
+    ["Folradstraße", "Heuchelheim"],
+    ["Großniedesheimer Straße", "Heuchelheim"],
+    ["Haardtstraße", "Heuchelheim"],
+    ["Hallbergstraße", "Heuchelheim"],
+    ["Hauptstraße", "Heuchelheim"],
+    ["Heckweide", "Heuchelheim"],
+    ["Heppenheimer Straße", "Heuchelheim"],
+    ["Hochheimer Eck", "Heuchelheim"],
+    ["Im Kändelrain", "Heuchelheim"],
+    ["Kalmitstraße", "Heuchelheim"],
+    ["Karolinenstraße", "Heuchelheim"],
+    ["Kirchenstraße", "Heuchelheim"],
+    ["Kurpfalzstraße", "Heuchelheim"],
+    ["Leininger Straße", "Heuchelheim"],
+    ["Lorscher Straße", "Heuchelheim"],
+    ["Neugasse", "Heuchelheim"],
+    ["Offsteiner Straße", "Heuchelheim"],
+    ["Ringstraße", "Heuchelheim"],
+    ["Thalhofstraße", "Heuchelheim"],
+    ["Weinbietstraße", "Heuchelheim"],
+    ["Altleininger Straße", "Altleiningen"],
+    ["Am Bürgerhaus", "Altleiningen"],
+    ["Am Klosterberg", "Altleiningen"],
+    ["Amselthal", "Altleiningen"],
+    ["An der Eiche", "Altleiningen"],
+    ["Bahnhofstraße", "Altleiningen"],
+    ["Bildstockstraße", "Altleiningen"],
+    ["Burg", "Altleiningen"],
+    ["Burgberg", "Altleiningen"],
+    ["Burgstraße", "Altleiningen"],
+    ["Drahtzug", "Altleiningen"],
+    ["Drosselweg", "Altleiningen"],
+    ["Eulenweg", "Altleiningen"],
+    ["Falkenweg", "Altleiningen"],
+    ["Finkenweg", "Altleiningen"],
+    ["Friedhofstraße", "Altleiningen"],
+    ["Gartenhof", "Altleiningen"],
+    ["Georg-Stein-Straße", "Altleiningen"],
+    ["Goethestraße", "Altleiningen"],
+    ["Groß-Sägemühle", "Altleiningen"],
+    ["Gräfenthalstraße", "Altleiningen"],
+    ["Hauptstraße", "Altleiningen"],
+    ["Haydnstraße", "Altleiningen"],
+    ["Hinkeläckerstraße", "Altleiningen"],
+    ["Hintergasse", "Altleiningen"],
+    ["Hof am Hang", "Altleiningen"],
+    ["Höninger Hauptstraße", "Altleiningen"],
+    ["Höninger Straße", "Altleiningen"],
+    ["Im Weihertal", "Altleiningen"],
+    ["Junghof", "Altleiningen"],
+    ["Kantstraße", "Altleiningen"],
+    ["Kiefertal", "Altleiningen"],
+    ["Kirchstraße", "Altleiningen"],
+    ["Kleinsägemühle", "Altleiningen"],
+    ["Klosterstraße", "Altleiningen"],
+    ["Lerchenweg", "Altleiningen"],
+    ["Lessingstraße", "Altleiningen"],
+    ["Meisenweg", "Altleiningen"],
+    ["Mozartstraße", "Altleiningen"],
+    ["Märzweiherhof", "Altleiningen"],
+    ["Neuhof", "Altleiningen"],
+    ["Obere Bahnhofstraße", "Altleiningen"],
+    ["Odenwaldstraße", "Altleiningen"],
+    ["Ringstraße", "Altleiningen"],
+    ["Rosenstraße", "Altleiningen"],
+    ["Sankt-Jakob-Straße", "Altleiningen"],
+    ["Schillerstraße", "Altleiningen"],
+    ["Schindtthalstraße", "Altleiningen"],
+    ["Schlossmühle", "Altleiningen"],
+    ["Schubertstraße", "Altleiningen"],
+    ["Schulstraße", "Altleiningen"],
+    ["Spechtal", "Altleiningen"],
+    ["Sportplatzstraße", "Altleiningen"],
+    ["Starenweg", "Altleiningen"],
+    ["Stockäckerstraße", "Altleiningen"],
+    ["Talstraße", "Altleiningen"],
+    ["Taubersberg", "Altleiningen"],
+    ["Taubersbergstraße", "Altleiningen"],
+    ["Tränkwoog", "Altleiningen"],
+    ["Uhlandstraße", "Altleiningen"],
+    ["Villa Waldheim", "Altleiningen"],
+    ["Villastraße", "Altleiningen"],
+    ["Villaweg", "Altleiningen"],
+    ["Waldstraße", "Altleiningen"],
+    ["Zimmerbergstraße", "Altleiningen"],
+    ["1.Querstraße", "Freinsheim"],
+    ["2.Querstraße", "Freinsheim"],
+    ["3.Querstraße", "Freinsheim"],
+    ["4.Querstraße", "Freinsheim"],
+    ["5.Querstraße", "Freinsheim"],
+    ["6.Querstraße", "Freinsheim"],
+    ["Alleestraße", "Freinsheim"],
+    ["Alzeyer Straße", "Freinsheim"],
+    ["Am Gottesacker", "Freinsheim"],
+    ["Am Guten Brunnen", "Freinsheim"],
+    ["Am Güterbahnhof", "Freinsheim"],
+    ["Am Langenstein", "Freinsheim"],
+    ["Am Mandelgarten", "Freinsheim"],
+    ["Am Musikantenbuckel", "Freinsheim"],
+    ["Am Rosenbühl", "Freinsheim"],
+    ["Am Sternes", "Freinsheim"],
+    ["Am Wurmberg", "Freinsheim"],
+    ["Am Zwinger", "Freinsheim"],
+    ["An der Bach", "Freinsheim"],
+    ["An der Quelle", "Freinsheim"],
+    ["Auf dem Groß", "Freinsheim"],
+    ["Auf der Schanz", "Freinsheim"],
+    ["Badstraße", "Freinsheim"],
+    ["Bahnhofstraße", "Freinsheim"],
+    ["Beethovenstraße", "Freinsheim"],
+    ["Bismarckstraße", "Freinsheim"],
+    ["Borngasse", "Freinsheim"],
+    ["Breitestraße", "Freinsheim"],
+    ["Burgstraße", "Freinsheim"],
+    ["Buttstädter Straße", "Freinsheim"],
+    ["Bärengasse", "Freinsheim"],
+    ["Dackenheimer Straße", "Freinsheim"],
+    ["Denkmalstraße", "Freinsheim"],
+    ["Dr. Kausch-Straße", "Freinsheim"],
+    ["Dr. Lehmann-Straße", "Freinsheim"],
+    ["Dürkheimer Hohl", "Freinsheim"],
+    ["Erpolzheimer Straße", "Freinsheim"],
+    ["Fontanestraße", "Freinsheim"],
+    ["Franz-Lind-Straße", "Freinsheim"],
+    ["Franz-Liszt-Straße", "Freinsheim"],
+    ["Friedhofstraße", "Freinsheim"],
+    ["Friedrich-Bruch-Straße", "Freinsheim"],
+    ["Gewerbestraße", "Freinsheim"],
+    ["Goethestraße", "Freinsheim"],
+    ["Gottfried-Weber-Straße", "Freinsheim"],
+    ["Großkarlbacher-Straße", "Freinsheim"],
+    ["Hahnenweg", "Freinsheim"],
+    ["Haintorstraße", "Freinsheim"],
+    ["Hans-Bühl-Straße", "Freinsheim"],
+    ["Hauptstraße", "Freinsheim"],
+    ["Haydnstraße", "Freinsheim"],
+    ["Herrenstraße", "Freinsheim"],
+    ["Herxheimer Hohl", "Freinsheim"],
+    ["Herxheimer Straße", "Freinsheim"],
+    ["Herzogstraße", "Freinsheim"],
+    ["Hinter den Rüstern", "Freinsheim"],
+    ["Hirtenhof", "Freinsheim"],
+    ["Holzweg", "Freinsheim"],
+    ["Im Kitzig", "Freinsheim"],
+    ["Im Schloßkeller", "Freinsheim"],
+    ["Im Wolf", "Freinsheim"],
+    ["In den Bohngärten", "Freinsheim"],
+    ["In den Breitwiesen", "Freinsheim"],
+    ["In den Schlosswiesen", "Freinsheim"],
+    ["In der Talweide", "Freinsheim"],
+    ["Jahnstraße", "Freinsheim"],
+    ["Johannes-Brahms-Weg", "Freinsheim"],
+    ["Judengasse", "Freinsheim"],
+    ["Kapellenhof", "Freinsheim"],
+    ["Kirschgartenweg", "Freinsheim"],
+    ["Korngasse", "Freinsheim"],
+    ["Liebfrauenbergstraße", "Freinsheim"],
+    ["Lindemannsruhe", "Freinsheim"],
+    ["Löwengraben", "Freinsheim"],
+    ["Marcigny Straße", "Freinsheim"],
+    ["Martinstraße", "Freinsheim"],
+    ["Mozartstraße", "Freinsheim"],
+    ["Nördliche Ringstraße", "Freinsheim"],
+    ["Nördliche Winzerstraße", "Freinsheim"],
+    ["Pfarrgasse", "Freinsheim"],
+    ["Raiffeisenstraße", "Freinsheim"],
+    ["Reiboldstraße", "Freinsheim"],
+    ["Retzerstraße", "Freinsheim"],
+    ["Richard-Wagner-Straße", "Freinsheim"],
+    ["Riedweg", "Freinsheim"],
+    ["Robert-Schumann-Weg", "Freinsheim"],
+    ["Schloßgasse", "Freinsheim"],
+    ["Schubertstraße", "Freinsheim"],
+    ["Südliche Ringstraße", "Freinsheim"],
+    ["Südliche Winzerstraße", "Freinsheim"],
+    ["Talweide", "Freinsheim"],
+    ["Uhlandstraße", "Freinsheim"],
+    ["Wallstraße", "Freinsheim"],
+    ["Weisenheimer Straße", "Freinsheim"],
+    ["Weiße Gärten", "Freinsheim"],
+    ["Wenjenstraße", "Freinsheim"],
+    ["Winterhalde", "Freinsheim"],
+    ["von-Busch-Hof", "Freinsheim"],
+    ["Östliche Winzerstraße", "Freinsheim"],
+    ["Albert-Schweitzer-Straße", "Flörsheim-Dalsheim"],
+    ["Alexanderhof", "Flörsheim-Dalsheim"],
+    ["Alte Straße", "Flörsheim-Dalsheim"],
+    ["Alzeyer Straße", "Flörsheim-Dalsheim"],
+    ["Am Dorfgraben", "Flörsheim-Dalsheim"],
+    ["Am Frauenberg", "Flörsheim-Dalsheim"],
+    ["Am Goldberg", "Flörsheim-Dalsheim"],
+    ["Am Obertor", "Flörsheim-Dalsheim"],
+    ["Am Pfarrgarten", "Flörsheim-Dalsheim"],
+    ["Am Pfortengarten", "Flörsheim-Dalsheim"],
+    ["Am Trappenberg", "Flörsheim-Dalsheim"],
+    ["Am Untertor", "Flörsheim-Dalsheim"],
+    ["An der Gundheimer Straße", "Flörsheim-Dalsheim"],
+    ["An der Westerweede", "Flörsheim-Dalsheim"],
+    ["Anna-Seghers-Ring", "Flörsheim-Dalsheim"],
+    ["Auf dem Römer", "Flörsheim-Dalsheim"],
+    ["Auf der Hecke", "Flörsheim-Dalsheim"],
+    ["Auf der Höhe", "Flörsheim-Dalsheim"],
+    ["Bahnhaus Nr.15", "Flörsheim-Dalsheim"],
+    ["Bahnhofsplatz", "Flörsheim-Dalsheim"],
+    ["Bahnhofstraße", "Flörsheim-Dalsheim"],
+    ["Bertolt-Brecht-Weg", "Flörsheim-Dalsheim"],
+    ["Blumengasse", "Flörsheim-Dalsheim"],
+    ["Burggasse", "Flörsheim-Dalsheim"],
+    ["Carl-Zuckmayer-Weg", "Flörsheim-Dalsheim"],
+    ["Dalbergstraße", "Flörsheim-Dalsheim"],
+    ["Donnersbergerstraße", "Flörsheim-Dalsheim"],
+    ["Eisenbahnstraße", "Flörsheim-Dalsheim"],
+    ["Elisabeth-Langgässer-Weg", "Flörsheim-Dalsheim"],
+    ["Gartenstraße", "Flörsheim-Dalsheim"],
+    ["Goethestraße", "Flörsheim-Dalsheim"],
+    ["Gundersheimer Weg", "Flörsheim-Dalsheim"],
+    ["Heinrich-Böll-Weg", "Flörsheim-Dalsheim"],
+    ["Heinrich-Heine-Weg", "Flörsheim-Dalsheim"],
+    ["Im Kessel", "Flörsheim-Dalsheim"],
+    ["Im Steinland", "Flörsheim-Dalsheim"],
+    ["Jakobsgasse", "Flörsheim-Dalsheim"],
+    ["Kirchgasse", "Flörsheim-Dalsheim"],
+    ["Kreuzhohlstraße", "Flörsheim-Dalsheim"],
+    ["Leiningerstraße", "Flörsheim-Dalsheim"],
+    ["Lessingstraße", "Flörsheim-Dalsheim"],
+    ["Liebigstraße", "Flörsheim-Dalsheim"],
+    ["Mittelgasse", "Flörsheim-Dalsheim"],
+    ["Monsheimer Straße", "Flörsheim-Dalsheim"],
+    ["Moorgasse", "Flörsheim-Dalsheim"],
+    ["Mölsheimerstraße", "Flörsheim-Dalsheim"],
+    ["Pfarrgasse", "Flörsheim-Dalsheim"],
+    ["Pfarrgäßchen", "Flörsheim-Dalsheim"],
+    ["Philipp-Merkel-Straße", "Flörsheim-Dalsheim"],
+    ["Philipp-von-Flersheim-Straße", "Flörsheim-Dalsheim"],
+    ["Plenzer", "Flörsheim-Dalsheim"],
+    ["Rieslingstraße", "Flörsheim-Dalsheim"],
+    ["Rodensteinerstraße", "Flörsheim-Dalsheim"],
+    ["Rödlerstraße", "Flörsheim-Dalsheim"],
+    ["Schillerstraße", "Flörsheim-Dalsheim"],
+    ["Schlossgasse", "Flörsheim-Dalsheim"],
+    ["Schmiedgasse", "Flörsheim-Dalsheim"],
+    ["Schulberg", "Flörsheim-Dalsheim"],
+    ["Silvanerring", "Flörsheim-Dalsheim"],
+    ["Sonnestraße", "Flörsheim-Dalsheim"],
+    ["Steigerhof", "Flörsheim-Dalsheim"],
+    ["Theodor-Heuss-Straße", "Flörsheim-Dalsheim"],
+    ["Thomas-Mann-Weg", "Flörsheim-Dalsheim"],
+    ["Uhlandstraße", "Flörsheim-Dalsheim"],
+    ["Untergasse", "Flörsheim-Dalsheim"],
+    ["Vordergasse", "Flörsheim-Dalsheim"],
+    ["Weedenplatz", "Flörsheim-Dalsheim"],
+    ["Weedgasse", "Flörsheim-Dalsheim"],
+    ["Weinbergstraße", "Flörsheim-Dalsheim"],
+    ["Wilhelm-Ternis-Straße", "Flörsheim-Dalsheim"],
+    ["Willy-Brandt-Ring", "Flörsheim-Dalsheim"],
+    ["Wonnegaustraße", "Flörsheim-Dalsheim"],
+    ["Zellerweg", "Flörsheim-Dalsheim"],
+    ["Zwerchgasse", "Flörsheim-Dalsheim"],
+    ["Übenstraße", "Flörsheim-Dalsheim"],
+    ["Am Friedhof", "Biedesheim"],
+    ["Am Kirchenrech", "Biedesheim"],
+    ["Am Spielplatz", "Biedesheim"],
+    ["Friedenstraße", "Biedesheim"],
+    ["Gartenweg", "Biedesheim"],
+    ["Göllheimer Straße", "Biedesheim"],
+    ["Hauptstraße", "Biedesheim"],
+    ["Im Bangert", "Biedesheim"],
+    ["Katzengässchen", "Biedesheim"],
+    ["Kindenheimer Straße", "Biedesheim"],
+    ["Lautersheimer Straße", "Biedesheim"],
+    ["Monsheimer Straße", "Biedesheim"],
+    ["Mühlweg", "Biedesheim"],
+    ["Neumühle", "Biedesheim"],
+    ["Neustraße", "Biedesheim"],
+    ["Ottersheimer Straße", "Biedesheim"],
+    ["Pfarrgasse", "Biedesheim"],
+    ["Quirnheimer Straße", "Biedesheim"],
+    ["Ringstraße", "Biedesheim"],
+    ["Schulstraße", "Biedesheim"],
+    ["Schönblick", "Biedesheim"],
+    ["Sonnenwinkel", "Biedesheim"],
+    ["Westlicher Burggraben", "Biedesheim"],
+    ["Wiesenstraße", "Biedesheim"],
+    ["Östlicher Burggraben", "Biedesheim"],
+    ["An der Halt", "Lautersheim"],
+    ["Elsengasse", "Lautersheim"],
+    ["Friedhofstraße", "Lautersheim"],
+    ["Gundheimer Weg", "Lautersheim"],
+    ["Göllheimer Straße", "Lautersheim"],
+    ["Hauptstraße", "Lautersheim"],
+    ["Hintere Steingasse", "Lautersheim"],
+    ["Hintergasse", "Lautersheim"],
+    ["Im Dorngarten", "Lautersheim"],
+    ["Im Hafergarten", "Lautersheim"],
+    ["Im Kirchgarten", "Lautersheim"],
+    ["In den Bohngärten", "Lautersheim"],
+    ["Kindenheimer Weg", "Lautersheim"],
+    ["Neugasse", "Lautersheim"],
+    ["Neun Morgen", "Lautersheim"],
+    ["Turnstraße", "Lautersheim"],
+    ["Vordere Steingasse", "Lautersheim"],
+    ["Wintergasse", "Lautersheim"],
+    ["Zeller Hof", "Lautersheim"],
+    ["Adenauerstraße", "Kerzenheim"],
+    ["Adolf-von-Nassau-Straße", "Kerzenheim"],
+    ["Alte Eisenberger Straße", "Kerzenheim"],
+    ["Am Kalkofen", "Kerzenheim"],
+    ["Am Steinernen Kreuz", "Kerzenheim"],
+    ["An der Haardt", "Kerzenheim"],
+    ["Anne-Frank-Weg", "Kerzenheim"],
+    ["Arlessiedlung", "Kerzenheim"],
+    ["Blumenstraße", "Kerzenheim"],
+    ["Ebertsheimer Straße", "Kerzenheim"],
+    ["Eisenberger Straße", "Kerzenheim"],
+    ["Friedenstraße", "Kerzenheim"],
+    ["Gartenstraße", "Kerzenheim"],
+    ["Geierstraße", "Kerzenheim"],
+    ["Geschwister-Scholl-Straße", "Kerzenheim"],
+    ["Goethestraße", "Kerzenheim"],
+    ["Grauwaldsiedlung", "Kerzenheim"],
+    ["Gustav-Heinemann-Straße", "Kerzenheim"],
+    ["Göllheimer Häuschen", "Kerzenheim"],
+    ["Göllheimer Straße", "Kerzenheim"],
+    ["Hirtengasse", "Kerzenheim"],
+    ["Im Brüb'l", "Kerzenheim"],
+    ["Im Lettengarten", "Kerzenheim"],
+    ["In den Neun Morgen", "Kerzenheim"],
+    ["Jahnstraße", "Kerzenheim"],
+    ["Kerzweilerhof", "Kerzenheim"],
+    ["Kirchgasse", "Kerzenheim"],
+    ["Klostergasse", "Kerzenheim"],
+    ["Lautersheimer Straße", "Kerzenheim"],
+    ["Lochweg", "Kerzenheim"],
+    ["Neugasse", "Kerzenheim"],
+    ["Ollenhauerstraße", "Kerzenheim"],
+    ["Ostlandstraße", "Kerzenheim"],
+    ["Ostring", "Kerzenheim"],
+    ["Poststraße", "Kerzenheim"],
+    ["Richard-Wagner-Straße", "Kerzenheim"],
+    ["Ringstraße", "Kerzenheim"],
+    ["Rosenthalerhof", "Kerzenheim"],
+    ["Saarlandstraße", "Kerzenheim"],
+    ["Schillerstraße", "Kerzenheim"],
+    ["Schulstraße", "Kerzenheim"],
+    ["Steinäckersiedlung", "Kerzenheim"],
+    ["Wilhelm-Bernhard-Straße", "Kerzenheim"],
+    ["Willy-Brandt-Straße", "Kerzenheim"],
+    ["Zehntgasse", "Kerzenheim"],
+    ["An der Helincheneiche", "Steinborn"],
+    ["Anton-Bruckner-Straße", "Steinborn"],
+    ["Beethovenstraße", "Steinborn"],
+    ["Brahmsstraße", "Steinborn"],
+    ["Eichendorffstraße", "Steinborn"],
+    ["Franz-Schubert-Straße", "Steinborn"],
+    ["Freiherr-vom-Stein-Platz", "Steinborn"],
+    ["Hermann-Löns-Straße", "Steinborn"],
+    ["Händelstraße", "Steinborn"],
+    ["Kantstraße", "Steinborn"],
+    ["Lessingstraße", "Steinborn"],
+    ["Mozartstraße", "Steinborn"],
+    ["Paul-Lincke-Straße", "Steinborn"],
+    ["Paul-Münch-Straße", "Steinborn"],
+    ["Ramsener Straße", "Steinborn"],
+    ["Richard-Wagner-Straße", "Steinborn"],
+    ["Robert-Schumann-Straße", "Steinborn"],
+    ["Theodor-Storm-Straße", "Steinborn"],
+    ["Uhlandstraße", "Steinborn"],
+    ["Alfred-Koch-Straße", "Ramsen"],
+    ["Am Eisbach", "Ramsen"],
+    ["Am Heugraben", "Ramsen"],
+    ["Am Klosteracker", "Ramsen"],
+    ["Am Leistenberg", "Ramsen"],
+    ["Am Margarethenacker", "Ramsen"],
+    ["Am Mühlacker", "Ramsen"],
+    ["Bahnhofstraße", "Ramsen"],
+    ["Bergstraße", "Ramsen"],
+    ["Birkenweg", "Ramsen"],
+    ["Clauser Hof", "Ramsen"],
+    ["Eiswoog", "Ramsen"],
+    ["Flurstraße", "Ramsen"],
+    ["Forsthaus", "Ramsen"],
+    ["Friedhofstraße", "Ramsen"],
+    ["Gartenstraße", "Ramsen"],
+    ["Gänsberg", "Ramsen"],
+    ["Hauptstraße", "Ramsen"],
+    ["In dem Stöck", "Ramsen"],
+    ["Kisselhof", "Ramsen"],
+    ["Kleehof", "Ramsen"],
+    ["Klosterhof", "Ramsen"],
+    ["Klosterstraße", "Ramsen"],
+    ["Mühlstraße", "Ramsen"],
+    ["Mühlweg", "Ramsen"],
+    ["Neuhammer", "Ramsen"],
+    ["Pfaffenhecke", "Ramsen"],
+    ["Ripperter Hof", "Ramsen"],
+    ["Ripperterstraße", "Ramsen"],
+    ["Rosenthaler Straße", "Ramsen"],
+    ["Rosenweg", "Ramsen"],
+    ["Staufer Straße", "Ramsen"],
+    ["Waldstraße", "Ramsen"],
+    ["Wiesenstraße", "Ramsen"],
+    ["Am Kupferstollen", "Wattenheim"],
+    ["Am Steinbruch", "Wattenheim"],
+    ["An der Bleiche", "Wattenheim"],
+    ["Autobahnmeisterei", "Wattenheim"],
+    ["Baumgärten", "Wattenheim"],
+    ["Bgm.-Christmann-Straße", "Wattenheim"],
+    ["Carlsberger Straße", "Wattenheim"],
+    ["Dautengasse", "Wattenheim"],
+    ["Friedhofstraße", "Wattenheim"],
+    ["Gartenweg", "Wattenheim"],
+    ["Görlesgrund", "Wattenheim"],
+    ["Haardtblick", "Wattenheim"],
+    ["Hauptstraße", "Wattenheim"],
+    ["Heidebuckel", "Wattenheim"],
+    ["Hetschmühle", "Wattenheim"],
+    ["Hettenleidelheimer Straße", "Wattenheim"],
+    ["Hirtenweg", "Wattenheim"],
+    ["Hochgerichtstraße", "Wattenheim"],
+    ["In den Birken", "Wattenheim"],
+    ["In den Grasgärten", "Wattenheim"],
+    ["Jakob-Ries-Straße", "Wattenheim"],
+    ["Kirchengasse", "Wattenheim"],
+    ["Krümmpfad", "Wattenheim"],
+    ["Lauberweg", "Wattenheim"],
+    ["Leininger Straße", "Wattenheim"],
+    ["Lochberg", "Wattenheim"],
+    ["Mühlweg", "Wattenheim"],
+    ["Nackter Straße", "Wattenheim"],
+    ["Neuwoog", "Wattenheim"],
+    ["Pfarrgasse", "Wattenheim"],
+    ["Pfingstweide", "Wattenheim"],
+    ["Schmelz", "Wattenheim"],
+    ["Speyerer Straße", "Wattenheim"],
+    ["Staufergasse", "Wattenheim"],
+    ["Südstraße", "Wattenheim"],
+    ["Tiefenthaler Weg", "Wattenheim"],
+    ["Von-Blumencron-Ring", "Wattenheim"],
+    ["Wasserwerk", "Wattenheim"],
+    ["Wilhelmsallee", "Wattenheim"],
+    ["Altleininger Straße", "Carlsberg"],
+    ["Am Herrnkopf", "Carlsberg"],
+    ["Am Hügel", "Carlsberg"],
+    ["Am Kalkofen", "Carlsberg"],
+    ["Am Kornfeld", "Carlsberg"],
+    ["Am Ringelsberg", "Carlsberg"],
+    ["Am Schamberg", "Carlsberg"],
+    ["Am Sportplatz", "Carlsberg"],
+    ["Am Talhaus", "Carlsberg"],
+    ["Am Tannenhang", "Carlsberg"],
+    ["An der hohen Schule", "Carlsberg"],
+    ["Auf dem Forst", "Carlsberg"],
+    ["Bacherhof", "Carlsberg"],
+    ["Bergstraße", "Carlsberg"],
+    ["Birkenweg", "Carlsberg"],
+    ["Brunnenstraße", "Carlsberg"],
+    ["Böhlweg", "Carlsberg"],
+    ["Dorfstraße", "Carlsberg"],
+    ["Eichelstück", "Carlsberg"],
+    ["Fichteck", "Carlsberg"],
+    ["Finkenhof", "Carlsberg"],
+    ["Fliederweg", "Carlsberg"],
+    ["Frauenthal", "Carlsberg"],
+    ["Friedhofstraße", "Carlsberg"],
+    ["Fuchsdell", "Carlsberg"],
+    ["Gartenstraße", "Carlsberg"],
+    ["Gartenweg", "Carlsberg"],
+    ["Ginsterweg", "Carlsberg"],
+    ["Harzofenberg", "Carlsberg"],
+    ["Hasental", "Carlsberg"],
+    ["Hauptstraße", "Carlsberg"],
+    ["Hintergasse", "Carlsberg"],
+    ["Holunderweg", "Carlsberg"],
+    ["Klapptor", "Carlsberg"],
+    ["Kleinfrankreich", "Carlsberg"],
+    ["Klosterhofstraße", "Carlsberg"],
+    ["Kreuzweg", "Carlsberg"],
+    ["Kurweg", "Carlsberg"],
+    ["Lampertsteig", "Carlsberg"],
+    ["Lindenstraße", "Carlsberg"],
+    ["Linienstraße", "Carlsberg"],
+    ["Margarethenhof", "Carlsberg"],
+    ["Mittelweg", "Carlsberg"],
+    ["Oberselighof", "Carlsberg"],
+    ["Parkstraße", "Carlsberg"],
+    ["Poststraße", "Carlsberg"],
+    ["Ramserhohl", "Carlsberg"],
+    ["Rehsteig", "Carlsberg"],
+    ["Schorlenbergstraße", "Carlsberg"],
+    ["Schulweg", "Carlsberg"],
+    ["Seckenhäuserhof", "Carlsberg"],
+    ["Seckenhäuserstraße", "Carlsberg"],
+    ["Siebenmorgenhof", "Carlsberg"],
+    ["Sonnenberg", "Carlsberg"],
+    ["Taubersbergweg", "Carlsberg"],
+    ["Tessiner Weg", "Carlsberg"],
+    ["Unterdorfstraße", "Carlsberg"],
+    ["Unterer Herrnkopf", "Carlsberg"],
+    ["Unterer Kurweg", "Carlsberg"],
+    ["Unterselighof", "Carlsberg"],
+    ["Waldstraße", "Carlsberg"],
+    ["Wattenheimer Straße", "Carlsberg"],
+    ["Weißdornweg", "Carlsberg"],
+    ["Wolfshohl", "Carlsberg"],
+    ["Ackerbrunnengasse", "Weisenheim am Sand"],
+    ["Ahornweg", "Weisenheim am Sand"],
+    ["Almenweg", "Weisenheim am Sand"],
+    ["Am Dorfgraben", "Weisenheim am Sand"],
+    ["Am Gottesacker", "Weisenheim am Sand"],
+    ["Am Herrberg", "Weisenheim am Sand"],
+    ["Am Hochrech", "Weisenheim am Sand"],
+    ["Am Mörsch", "Weisenheim am Sand"],
+    ["Am Nartenberg", "Weisenheim am Sand"],
+    ["Amselweg", "Weisenheim am Sand"],
+    ["An der Bleiche", "Weisenheim am Sand"],
+    ["Bahnhofstraße", "Weisenheim am Sand"],
+    ["Beethovenstraße", "Weisenheim am Sand"],
+    ["Bismarckstraße", "Weisenheim am Sand"],
+    ["Buchenweg", "Weisenheim am Sand"],
+    ["Diakonissenstraße", "Weisenheim am Sand"],
+    ["Diehlstraße", "Weisenheim am Sand"],
+    ["Donnersbergstraße", "Weisenheim am Sand"],
+    ["Dr. Kurt-Schumacher-Straße", "Weisenheim am Sand"],
+    ["Dr. Welte-Straße", "Weisenheim am Sand"],
+    ["Eichgasse", "Weisenheim am Sand"],
+    ["Erlenweg", "Weisenheim am Sand"],
+    ["Eyersheimer Hof", "Weisenheim am Sand"],
+    ["Eyersheimer Mühle", "Weisenheim am Sand"],
+    ["Fahrgasse", "Weisenheim am Sand"],
+    ["Fingerhutsgasse", "Weisenheim am Sand"],
+    ["Finkenpfad", "Weisenheim am Sand"],
+    ["Friedhofstraße", "Weisenheim am Sand"],
+    ["Friedrich-Ebert-Straße", "Weisenheim am Sand"],
+    ["Friedrichstraße", "Weisenheim am Sand"],
+    ["Gartenstraße", "Weisenheim am Sand"],
+    ["Georg-Gerhard-Straße", "Weisenheim am Sand"],
+    ["Gerolsheimer Straße", "Weisenheim am Sand"],
+    ["Goethestraße", "Weisenheim am Sand"],
+    ["Großkarlbacher Straße", "Weisenheim am Sand"],
+    ["Göbelstraße", "Weisenheim am Sand"],
+    ["Haardtstraße", "Weisenheim am Sand"],
+    ["Hermann-Löns-Straße", "Weisenheim am Sand"],
+    ["Holzweg", "Weisenheim am Sand"],
+    ["Im Diehl", "Weisenheim am Sand"],
+    ["Im Spieß", "Weisenheim am Sand"],
+    ["In den Almen", "Weisenheim am Sand"],
+    ["Kalmitstraße", "Weisenheim am Sand"],
+    ["Kastanienweg", "Weisenheim am Sand"],
+    ["Kirchplatz", "Weisenheim am Sand"],
+    ["Kisselbühlweg", "Weisenheim am Sand"],
+    ["Kleegasse", "Weisenheim am Sand"],
+    ["Konrad-Adenauer-Straße", "Weisenheim am Sand"],
+    ["Laumersheimer Straße", "Weisenheim am Sand"],
+    ["Limburgstraße", "Weisenheim am Sand"],
+    ["Lindenweg", "Weisenheim am Sand"],
+    ["Ludwigshain", "Weisenheim am Sand"],
+    ["Luisenstraße", "Weisenheim am Sand"],
+    ["Mittelstraße", "Weisenheim am Sand"],
+    ["Mozartstraße", "Weisenheim am Sand"],
+    ["Nikolaus-Henrich-Straße", "Weisenheim am Sand"],
+    ["Ostring", "Weisenheim am Sand"],
+    ["Parkweg", "Weisenheim am Sand"],
+    ["Peterskopfstraße", "Weisenheim am Sand"],
+    ["Pfarrgasse", "Weisenheim am Sand"],
+    ["Raiffeisenstraße", "Weisenheim am Sand"],
+    ["Rheinstraße", "Weisenheim am Sand"],
+    ["Riedweg", "Weisenheim am Sand"],
+    ["Ritter-von-Geißler-Straße", "Weisenheim am Sand"],
+    ["Schafweideweg", "Weisenheim am Sand"],
+    ["Schiffergasse", "Weisenheim am Sand"],
+    ["Schillerstraße", "Weisenheim am Sand"],
+    ["Schlagweg", "Weisenheim am Sand"],
+    ["Schloßgasse", "Weisenheim am Sand"],
+    ["Schulstraße", "Weisenheim am Sand"],
+    ["Schäfersteg", "Weisenheim am Sand"],
+    ["Seligmannsgasse", "Weisenheim am Sand"],
+    ["Speyerer Straße", "Weisenheim am Sand"],
+    ["Theodor-Heuss-Straße", "Weisenheim am Sand"],
+    ["Waschgasse", "Weisenheim am Sand"],
+    ["Weinbietstraße", "Weisenheim am Sand"],
+    ["Westring", "Weisenheim am Sand"],
+    ["Wiesenstraße", "Weisenheim am Sand"],
+    ["Wilhelm-Busch-Straße", "Weisenheim am Sand"],
+    ["Wormser Straße", "Weisenheim am Sand"],
+    ["Ziegelhütte", "Weisenheim am Sand"],
+    ["Alte Kellerei", "Kallstadt"],
+    ["Am Hübaum", "Kallstadt"],
+    ["Am Kleisinger", "Kallstadt"],
+    ["Am Streitacker", "Kallstadt"],
+    ["An der Bleiche", "Kallstadt"],
+    ["Annabergstraße", "Kallstadt"],
+    ["Auf der Hayert", "Kallstadt"],
+    ["Backhausgasse", "Kallstadt"],
+    ["Erpolzheimer Weg", "Kallstadt"],
+    ["Forsthaus Wolfental", "Kallstadt"],
+    ["Freinsheimer Straße", "Kallstadt"],
+    ["Hebengasse", "Kallstadt"],
+    ["Im Mosenborn", "Kallstadt"],
+    ["Jägerthal", "Kallstadt"],
+    ["Leistadter Straße", "Kallstadt"],
+    ["Neugasse", "Kallstadt"],
+    ["Riedweg", "Kallstadt"],
+    ["Stichelpfad", "Kallstadt"],
+    ["Weinstraße", "Kallstadt"],
+    ["Wiesengasse", "Kallstadt"],
+    ["Am Brandweiher", "Leistadt"],
+    ["Am Eichelberg", "Leistadt"],
+    ["Am Hügel", "Leistadt"],
+    ["Am Lochacker", "Leistadt"],
+    ["Am Woogbach", "Leistadt"],
+    ["Am Woogberg", "Leistadt"],
+    ["Berntal", "Leistadt"],
+    ["Bärbelhof", "Leistadt"],
+    ["Freinsheimer Straße", "Leistadt"],
+    ["Hauptstraße", "Leistadt"],
+    ["Häuserhohl", "Leistadt"],
+    ["Höhenweg", "Leistadt"],
+    ["Im Obergarten", "Leistadt"],
+    ["Im Stephansstück", "Leistadt"],
+    ["In den Langwiesen", "Leistadt"],
+    ["In den Weiden", "Leistadt"],
+    ["In der Nonnenhecke", "Leistadt"],
+    ["Jan-Daniel-Georgens-Straße", "Leistadt"],
+    ["Kallstadter Straße", "Leistadt"],
+    ["Kornblumenweg", "Leistadt"],
+    ["Kurt-Dehn-Platz", "Leistadt"],
+    ["Pochelstraße", "Leistadt"],
+    ["Ringstraße", "Leistadt"],
+    ["Rotsteigerweg", "Leistadt"],
+    ["Waldstraße", "Leistadt"],
+    ["Weidenhof", "Leistadt"]
+  ],
+  "mapPlaces": {
+  "Grünstadt": "67269 Grünstadt",
+  "Bockenheim": "67278 Bockenheim an der Weinstraße",
+  "Kirchheim": "67281 Kirchheim an der Weinstraße",
+  "Bobenheim": "67273 Bobenheim am Berg",
+  "Herxheim": "67273 Herxheim am Berg",
+  "Hohensülzen": "67591 Hohen-Sülzen",
+  "Heuchelheim": "67259 Heuchelheim bei Frankenthal",
+  "Eisenberg": "67304 Eisenberg (Pfalz)",
+  "Obrigheim": "67283 Obrigheim (Pfalz)",
+  "Albsheim": "Albsheim an der Eis, 67283 Obrigheim (Pfalz)",
+  "Colgenstein": "Colgenstein-Heidesheim, 67283 Obrigheim (Pfalz)",
+  "Heidesheim": "Colgenstein-Heidesheim, 67283 Obrigheim (Pfalz)",
+  "Asselheim": "Asselheim, 67269 Grünstadt",
+  "Sausenheim": "Sausenheim, 67269 Grünstadt",
+  "Steinborn": "Steinborn, 67304 Eisenberg (Pfalz)",
+  "Boßweiler": "Boßweiler, 67280 Quirnheim",
+  "Leistadt": "Leistadt, 67098 Bad Dürkheim",
+  "Tiefenthal": "67311 Tiefenthal (Pfalz)",
+  "Quirnheim": "67280 Quirnheim",
+  "Kindenheim": "67271 Kindenheim",
+  "Ebertsheim": "67280 Ebertsheim",
+  "Mertesheim": "67271 Mertesheim",
+  "Obersülzen": "67271 Obersülzen",
+  "Dirmstein": "67246 Dirmstein",
+  "Neuleiningen": "67271 Neuleiningen",
+  "Laumersheim": "67229 Laumersheim",
+  "Kleinkarlbach": "67271 Kleinkarlbach",
+  "Dackenheim": "67273 Dackenheim",
+  "Großkarlbach": "67229 Großkarlbach",
+  "Weisenheim am Berg": "67273 Weisenheim am Berg",
+  "Monsheim": "67590 Monsheim",
+  "Offstein": "67591 Offstein",
+  "Hettenleidelheim": "67310 Hettenleidelheim",
+  "Gerolsheim": "67229 Gerolsheim",
+  "Freinsheim": "67251 Freinsheim",
+  "Flörsheim-Dalsheim": "67592 Flörsheim-Dalsheim",
+  "Biedesheim": "67308 Biedesheim",
+  "Lautersheim": "67308 Lautersheim",
+  "Kerzenheim": "67304 Kerzenheim",
+  "Ramsen": "67305 Ramsen",
+  "Wattenheim": "67319 Wattenheim",
+  "Carlsberg": "67316 Carlsberg",
+  "Weisenheim am Sand": "67256 Weisenheim am Sand",
+  "Kallstadt": "67169 Kallstadt"
+}
+};
+
+// OpenPLZ API / OpenStreetMap contributors. ODbL 1.0.
+const openPlzStreets = [
+  ["Gänseweg", "Albsheim"],
+  ["Diebspfad", "Bobenheim"],
+  ["Kirschpfad", "Bobenheim"],
+  ["Unterer Bobenheimer Weg", "Bobenheim"],
+  ["Amselweg", "Bockenheim"],
+  ["WeinStraße", "Dackenheim"],
+  ["Handgasse", "Dirmstein"],
+  ["Freiheitsplatz", "Eisenberg"],
+  ["Otto-Anspach-Straße", "Eisenberg"],
+  ["Dr.-Reiner-Straßburg-Weg", "Eisenberg"],
+  ["Pfarrer-Wilhelm-Bechberger-Weg", "Eisenberg"],
+  ["Nieder-Flörsheimer-Straße", "Flörsheim-Dalsheim"],
+  ["Hermann-Sinsheimer Weg", "Freinsheim"],
+  ["FriedhofStraße", "Gerolsheim"],
+  ["Haardtweg", "Gerolsheim"],
+  ["Traminerpfad", "Großkarlbach"],
+  ["Nackter Weg", "Hettenleidelheim"],
+  ["Heppenheimer Weg", "Heuchelheim"],
+  ["Alter Mauerweg", "Kerzenheim"],
+  ["Grünstadter Weg", "Kirchheim"],
+  ["Leininger Weg", "Kirchheim"],
+  ["Leininger Weg", "Kleinkarlbach"],
+  ["Schießholenweg", "Laumersheim"],
+  ["Friedhofsweg", "Lautersheim"],
+  ["Steingasse", "Lautersheim"],
+  ["Am Schloss", "Monsheim"],
+  ["Grünstädter Straße", "Monsheim"],
+  ["Kaltenberger Weg", "Monsheim"],
+  ["Heidesheimer Straße", "Obersülzen"],
+  ["Adamspfad", "Steinborn"],
+  ["Ostring", "Steinborn"],
+  ["Westring", "Steinborn"],
+  ["FriedhofStraße", "Tiefenthal"],
+  ["Am Wasserturm", "Wattenheim"],
+  ["An der Synagoge", "Wattenheim"]
+];
+
+
+const byId = id => document.getElementById(id);
+const input = byId('query');
+const clearQuery = byId('clear-query');
+const filters = byId('filters');
+const results = byId('results');
+const tabs = [byId('menu-tab'), byId('address-tab')];
+const state = [{ query: '', filter: '' }, { query: '', filter: '' }];
+const categories = [...new Set(data.menu.map(row => row[2]))];
+const euros = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+const collator = new Intl.Collator('de');
+const price = cents => euros.format(cents / 100);
+const normalize = value => value.toLowerCase().replaceAll('ß', 'ss').replaceAll('ı', 'i').normalize('NFD').replace(/\p{M}/gu, '').replace(/[^a-z0-9]+/g, ' ').trim();
+const searchKey = value => normalize(value).replaceAll(' ', '');
+const towns = Object.entries(data.towns).sort(([a], [b]) => collator.compare(a, b));
+const streets = [...data.streets, ...openPlzStreets]
+  .sort(([a, t1], [b, t2]) => collator.compare(a, b) || collator.compare(t1, t2));
+const streetsByTown = new Map(towns.map(([town]) => [town, []]));
+for (const entry of streets) streetsByTown.get(entry[1]).push(entry);
+const sharedStreetArea = town => ['Colgenstein', 'Heidesheim'].includes(town) ? 'Colgenstein-Heidesheim' : null;
+const menuIndex = new Map(data.menu.filter(([code]) => code).map(row => [Number(row[0]), row]));
+let active = 0;
+
+function el(tag, text, className) {
+  const node = document.createElement(tag);
+  if (text != null) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function menuCard([code, name, category, prices], size) {
+  const card = el('li', null, 'card');
+  const text = el('div');
+  text.append(el('span', name, 'name'), el('span', category, 'meta'));
+  const values = el('div', null, 'prices');
+  const labels = prices.length === 2 ? ['M · 36 cm', 'G · 40 cm'] : code === '16' ? ['Ø 50 cm'] : [''];
+  prices.forEach((amount, index) => {
+    if (size != null && index !== size) return;
+    const value = el('div');
+    value.append(el('span', price(amount), 'price'));
+    if (labels[index]) value.append(el('span', labels[index], 'size'));
+    values.append(value);
+  });
+  card.append(el('span', code ?? '–', 'number'), text, values);
+  return card;
+}
+
+function mapsLink(street, town) {
+  const link = el('a', 'Google Maps ↗', 'maps-link');
+  const query = [street, data.mapPlaces?.[town] ?? town, 'Deutschland'].join(', ');
+  link.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.setAttribute('aria-label', street + ', ' + town + ' — Google Maps’te aç');
+  return link;
+}
+
+function addressCard(name, town, minimum) {
+  const card = el('li', null, 'card address-card');
+  const description = el('div');
+  description.append(el('span', name, 'name'));
+  description.append(el('span', sharedStreetArea(town) ?? town, 'meta'), mapsLink(name, town));
+  const amount = el('div', null, 'prices');
+  const value = el('div');
+  value.append(el('span', minimum + ' €', 'price'), el('span', 'Min. sipariş', 'size'));
+  amount.append(value);
+  card.append(description, amount);
+  return card;
+}
+
+function townCard(town, minimum) {
+  const card = el('li', null, 'town-card');
+  const button = el('button', null, 'town-button');
+  button.type = 'button';
+  button.dataset.town = town;
+  const label = el('span');
+  const entries = streetsByTown.get(town);
+  label.append(el('span', town, 'name'), el('span', entries.length + ' doğrulanmış sokak', 'meta'));
+  const amount = el('span');
+  amount.append(el('span', minimum + ' €', 'price'), el('span', 'Min. sipariş', 'size'));
+  button.append(label, amount);
+  button.addEventListener('click', () => {
+    input.blur();
+    const entry = { milanoAddress: { ...state[1], scroll: window.scrollY }, town };
+    history.replaceState({ milanoAddress: entry.milanoAddress, returnTown: town }, '');
+    history.pushState(entry, '');
+    showTown(town);
+  });
+  card.append(button);
+  return card;
+}
+
+function showTown(town) {
+  input.blur();
+  const entries = streetsByTown.get(town);
+  const title = byId('town-title');
+  title.textContent = town;
+  byId('town-count').textContent = entries.length + ' doğrulanmış sokak';
+  byId('town-minimum').textContent = 'Minimum sipariş ' + data.towns[town] + ' €';
+  const shared = sharedStreetArea(town);
+  const note = byId('town-note');
+  note.textContent = shared ? shared + ' ortak sokak listesi' : 'Bu yer için henüz doğrulanmış sokak kaydı yok.';
+  note.hidden = entries.length > 0 && !shared;
+  byId('town-streets').replaceChildren(...entries.map(([street]) => {
+    const item = el('li');
+    item.append(el('span', street), mapsLink(street, town));
+    return item;
+  }));
+  byId('main-tabs').hidden = true;
+  byId('results-panel').hidden = true;
+  byId('town-panel').hidden = false;
+  window.scrollTo(0, 0);
+  title.focus({ preventScroll: true });
+}
+
+function restoreAddress(entry) {
+  state[1] = { query: entry.milanoAddress.query, filter: entry.milanoAddress.filter };
+  byId('town-panel').hidden = true;
+  byId('main-tabs').hidden = false;
+  byId('results-panel').hidden = false;
+  selectTab(1);
+  if (streetsByTown.has(entry.town)) {
+    showTown(entry.town);
+    return;
+  }
+  const button = [...results.querySelectorAll('[data-town]')].find(item => item.dataset.town === entry.returnTown);
+  button?.focus({ preventScroll: true });
+  window.scrollTo(0, entry.milanoAddress.scroll);
+}
+
+function renderMenu(query, filter) {
+  const tokens = query.trim().split(/[\s,;]+/).filter(Boolean);
+  if (!tokens.length) return data.menu.filter(row => !filter || row[2] === filter).map(row => menuCard(row));
+  const coded = tokens.every(token => /^\d{1,3}[mg]?$/i.test(token));
+  const total = byId('total');
+  if (coded && (tokens.length > 1 || /[mg]$/i.test(tokens[0]))) {
+    const cards = [];
+    const missing = [];
+    let sum = 0;
+    for (const token of tokens) {
+      const row = menuIndex.get(parseInt(token, 10));
+      const suffix = token.slice(-1).toLowerCase();
+      const size = {m: 0, g: 1}[suffix];
+      if (!row || (size != null && row[3].length !== 2) || (size == null && row[3].length === 2)) {
+        missing.push(token);
+        continue;
+      }
+      cards.push(menuCard(row, size));
+      sum += row[3][size ?? 0];
+    }
+    total.textContent = missing.length
+      ? 'Kod veya boyut kontrolü: ' + missing.join(', ') + (cards.length ? ' · Ara toplam ' + price(sum) : '')
+      : 'Toplam ' + price(sum);
+    total.hidden = false;
+    return cards;
+  }
+  const key = searchKey(query);
+  return data.menu.filter(([code, name, category]) => {
+    const matches = /^\d+$/.test(query.trim()) ? code != null && Number(code) === Number(query) : searchKey(name).includes(key);
+    return matches && (!filter || category === filter);
+  }).map(row => menuCard(row));
+}
+
+function renderAddresses(query, filter) {
+  const key = searchKey(query);
+  const terms = normalize(query).split(' ');
+  const matchesZone = town => !filter || data.towns[town] === Number(filter);
+  const townCards = towns.filter(([town]) => matchesZone(town) &&
+    (searchKey(town).includes(key) || searchKey((data.mapPlaces[town] ?? town).split(',')[0]) === key))
+    .map(([town, minimum]) => townCard(town, minimum));
+  if (!key || towns.some(([town]) => searchKey(town) === key)) return townCards;
+  const streetCards = [];
+  const shown = new Set();
+  for (const [street, town] of streets) {
+    if (!matchesZone(town)) continue;
+    const streetKey = searchKey(street);
+    const combinedKey = searchKey(street + ' ' + town);
+    if (!streetKey.includes(key) &&
+        !(terms.some(term => streetKey.includes(term)) && terms.every(term => combinedKey.includes(term)))) continue;
+    const entryKey = (sharedStreetArea(town) ?? town) + '|' + streetKey;
+    if (shown.has(entryKey)) continue;
+    shown.add(entryKey);
+    streetCards.push(addressCard(street, town, data.towns[town]));
+  }
+  return [...townCards, ...streetCards];
+}
+
+function render() {
+  clearQuery.hidden = input.value.length === 0;
+  const { query, filter } = state[active];
+  byId('total').hidden = true;
+  const cards = active === 0 ? renderMenu(query, filter) : renderAddresses(query, filter);
+  byId('count').textContent = cards.length + ' sonuç';
+  results.replaceChildren(...(cards.length ? cards : [el('li', 'Sonuç bulunamadı.', 'empty')]));
+}
+
+function renderFilters() {
+  filters.hidden = active === 1;
+  if (active === 1) {
+    state[1].filter = '';
+    filters.replaceChildren();
+    return;
+  }
+  const choices = categories.map(label => [label, label]);
+  const buttons = [['', 'Tümü'], ...choices].map(([value, label]) => {
+    const button = el('button', label);
+    button.type = 'button';
+    button.setAttribute('aria-pressed', String(state[active].filter === value));
+    button.addEventListener('click', () => {
+      state[active].filter = value;
+      for (const item of filters.children) item.setAttribute('aria-pressed', String(item === button));
+      render();
+    });
+    return button;
+  });
+  filters.replaceChildren(...buttons);
+}
+
+function selectTab(index) {
+  active = index;
+  tabs.forEach((tab, i) => {
+    tab.setAttribute('aria-selected', String(index === i));
+    tab.tabIndex = index === i ? 0 : -1;
+  });
+  const address = index === 1;
+  byId('results-panel').setAttribute('aria-labelledby', tabs[index].id);
+  input.value = state[index].query;
+  input.placeholder = address ? 'Ör. Grünstadt, Kirchheimer Straße' : 'Numara veya yemek adı';
+  byId('search-label').textContent = address ? 'Yer veya sokak ara' : 'Yemek ara';
+  byId('hint').hidden = address;
+  byId('results-title').textContent = address ? 'Teslimat yerleri' : 'Speisekarte';
+  byId('results-title').classList.toggle('address-title', address);
+  byId('street-attribution').hidden = !address;
+  byId('pdf-link').textContent = address ? 'Teslimat haritası (PDF) ↗' : 'Orijinal menü PDF’si ↗';
+  byId('pdf-link').href = './speisekarte.pdf#page=' + (address ? 8 : 2);
+  renderFilters();
+  render();
+}
+
+tabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => selectTab(index));
+  tab.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? 1 : 1 - index;
+    selectTab(next);
+    tabs[next].focus();
+  });
+});
+input.addEventListener('input', () => {
+  state[active].query = input.value;
+  render();
+});
+// Suppress the button's default focus transfer before iOS handles the tap.
+for (const eventName of ['pointerdown', 'mousedown']) {
+  clearQuery.addEventListener(eventName, event => event.preventDefault());
+}
+clearQuery.addEventListener('click', () => {
+  input.value = '';
+  state[active].query = '';
+  input.focus({ preventScroll: true });
+  render();
+});
+// iOS keeps the layout viewport tall while the keyboard shrinks the visual viewport.
+const viewport = window.visualViewport;
+const compactRoot = document.documentElement;
+let searchBaseline = viewport?.height ?? window.innerHeight;
+let keyboardWasOpen = false;
+let keyboardDismissed = false;
+let searchScroll = 0;
+let viewportFrame = 0;
+
+function closeCompactSearch() {
+  const wasCompact = compactRoot.classList.contains('search-compact');
+  compactRoot.classList.remove('search-compact');
+  compactRoot.style.removeProperty('--search-top');
+  compactRoot.style.removeProperty('--search-height');
+  keyboardWasOpen = false;
+  if (wasCompact) window.scrollTo(0, searchScroll);
+}
+
+function updateSearchViewport() {
+  viewportFrame = 0;
+  const height = viewport?.height ?? window.innerHeight;
+  if (document.activeElement !== input || byId('results-panel').hidden) {
+    closeCompactSearch();
+    searchBaseline = height;
+    return;
+  }
+  // Keep pinch zoom independent from keyboard detection.
+  if (viewport && Math.abs(viewport.scale - 1) > 0.05) {
+    closeCompactSearch();
+    return;
+  }
+  searchBaseline = Math.max(searchBaseline, height);
+  const keyboardOpen = searchBaseline - height > 120;
+  if (keyboardWasOpen && !keyboardOpen) {
+    closeCompactSearch();
+    keyboardDismissed = true;
+    return;
+  }
+  if (keyboardDismissed && !keyboardOpen) return;
+  keyboardDismissed = false;
+  keyboardWasOpen = keyboardOpen;
+  compactRoot.classList.add('search-compact');
+  compactRoot.style.setProperty('--search-top', (viewport?.offsetTop ?? 0) + 'px');
+  compactRoot.style.setProperty('--search-height', height + 'px');
+}
+
+function scheduleSearchViewport() {
+  if (!viewportFrame) viewportFrame = requestAnimationFrame(updateSearchViewport);
+}
+
+input.addEventListener('focus', () => {
+  keyboardDismissed = false;
+  searchScroll = window.scrollY;
+  searchBaseline = Math.max(searchBaseline, viewport?.height ?? window.innerHeight);
+  keyboardWasOpen = false;
+  updateSearchViewport();
+});
+input.addEventListener('blur', closeCompactSearch);
+input.addEventListener('click', () => {
+  if (keyboardDismissed) {
+    keyboardDismissed = false;
+    updateSearchViewport();
+  }
+});
+viewport?.addEventListener('resize', scheduleSearchViewport);
+viewport?.addEventListener('scroll', scheduleSearchViewport);
+window.addEventListener('resize', scheduleSearchViewport);
+window.addEventListener('orientationchange', () => {
+  input.blur();
+  searchBaseline = 0;
+  scheduleSearchViewport();
+});
+byId('town-back').addEventListener('click', () => history.back());
+window.addEventListener('popstate', event => {
+  if (event.state?.milanoAddress) restoreAddress(event.state);
+});
+if (history.state?.milanoAddress) restoreAddress(history.state);
+else selectTab(0);
+
+</script>
+</body>
+</html>
