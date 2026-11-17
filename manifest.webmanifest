@@ -3,7 +3,7 @@
   "name": "Milano · Menü & Adres",
   "short_name": "Milano",
   "lang": "tr",
-  "start_url": "./",
+  "start_url": "./milano-guncel.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f5f1e8",
