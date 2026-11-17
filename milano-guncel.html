@@ -85,7 +85,7 @@ html.search-compact,html.search-compact body{overflow:hidden;overscroll-behavior
 .search-compact #total{flex:none;margin:8px 0 0}
 
 </style>
-<title>Milano · Güncel arama</title>
+<title>Milano · Güncel arama 14</title>
 </head>
 <body>
 <header>
@@ -3482,21 +3482,16 @@ function updateSearchViewport() {
     searchBaseline = height;
     return;
   }
-  // Keep pinch zoom independent from keyboard detection.
-  if (viewport && Math.abs(viewport.scale - 1) > 0.05) {
-    closeCompactSearch();
-    return;
-  }
   searchBaseline = Math.max(searchBaseline, height);
   const keyboardOpen = searchBaseline - height > 120;
-  if (keyboardWasOpen && !keyboardOpen) {
+  if (keyboardWasOpen && searchBaseline - height < 60) {
     closeCompactSearch();
     keyboardDismissed = true;
     return;
   }
   if (keyboardDismissed && !keyboardOpen) return;
   keyboardDismissed = false;
-  keyboardWasOpen = keyboardOpen;
+  keyboardWasOpen = keyboardWasOpen || keyboardOpen;
   compactRoot.classList.add('search-compact');
   compactRoot.style.setProperty('--search-top', (viewport?.offsetTop ?? 0) + 'px');
   compactRoot.style.setProperty('--search-height', height + 'px');
@@ -3514,6 +3509,11 @@ input.addEventListener('focus', () => {
   updateSearchViewport();
 });
 input.addEventListener('blur', closeCompactSearch);
+input.addEventListener('input', () => {
+  keyboardDismissed = false;
+  updateSearchViewport();
+});
+window.addEventListener('pageshow', scheduleSearchViewport);
 input.addEventListener('click', () => {
   if (keyboardDismissed) {
     keyboardDismissed = false;
