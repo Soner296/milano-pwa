@@ -43,9 +43,10 @@ button{cursor:pointer;color:inherit}
 .results-header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:15px 0 8px}
 h1{font:normal 29px Georgia,serif;margin:0}
 #results-title.address-title{font-size:24px}
-#results{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+#results{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+#results>li{flex:0 0 auto;min-width:0}
 .card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;background:#fffdfa;border:1px solid #e9e3d8;border-radius:12px;padding:11px;min-height:63px}
-.address-card{grid-template-columns:minmax(0,1fr) auto}
+.address-card{grid-template-columns:minmax(0,1fr) auto;align-items:start}
 .town-card{background:#fffdfa;border:1px solid #e9e3d8;border-radius:12px}
 .town-button{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px;width:100%;border:0;background:transparent;text-align:left;padding:11px;min-height:63px;border-radius:12px}
 .town-button::after{content:"";width:8px;height:8px;border-right:2px solid #506258;border-top:2px solid #506258;transform:rotate(45deg);margin:0 5px 0 1px}
@@ -106,7 +107,7 @@ footer{padding:20px 0 calc(20px + env(safe-area-inset-bottom))}
 <body>
 <header>
   <div class="masthead">
-    <div><div class="wordmark">Milano<span>.</span></div><p>Ristorante &amp; Pizzeria · <span id="build-version">17</span></p></div>
+    <div><div class="wordmark">Milano<span>.</span></div><p>Ristorante &amp; Pizzeria · <span id="build-version">18</span></p></div>
     <a class="call" href="tel:+4963594090491" aria-label="Milano’yu ara">Ara</a>
   </div>
 </header>
