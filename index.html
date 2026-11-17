@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="./icon-180.png">
 <link rel="icon" href="./icon-192.png">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css?v=13">
 <title>Milano · Menü &amp; Adres</title>
 </head>
 <body>
@@ -27,7 +27,7 @@
   <section id="results-panel" role="tabpanel" aria-labelledby="menu-tab">
     <div class="search-area">
       <label id="search-label" for="query">Yemek ara</label>
-      <div class="search"><span aria-hidden="true">⌕</span><input id="query" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Numara veya yemek adı"></div>
+      <div class="search"><span aria-hidden="true">⌕</span><input id="query" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Numara veya yemek adı"><button id="clear-query" type="button" aria-label="Aramayı temizle" hidden>×</button></div>
       <p id="hint">Boyut için 24m veya 27g yaz. Birden fazla kodda toplamı gör.</p>
     </div>
     <div id="filters" class="filters" aria-label="Filtreler"></div>
@@ -48,7 +48,7 @@
     <footer><a href="https://geoshop.rlp.de/opendata-hk.html" target="_blank" rel="noopener">©GeoBasis-DE / LVermGeoRP (2026)</a> · <a href="https://www.govdata.de/dl-de/by-2-0" target="_blank" rel="noopener">dl-de/by-2-0</a> · Daten bearbeitet<br><a href="https://www.openplzapi.org/en/sources/" target="_blank" rel="noopener">OpenPLZ API</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors · ODbL</a></footer>
   </section>
 </main>
-<script src="./local-data.js"></script>
-<script src="./app.js"></script>
+<script src="./local-data.js?v=13"></script>
+<script src="./app.js?v=13"></script>
 </body>
 </html>

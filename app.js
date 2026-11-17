@@ -1,6 +1,7 @@
 
 const byId = id => document.getElementById(id);
 const input = byId('query');
+const clearQuery = byId('clear-query');
 const filters = byId('filters');
 const results = byId('results');
 const tabs = [byId('menu-tab'), byId('address-tab')];
@@ -79,6 +80,7 @@ function townCard(town, minimum) {
   amount.append(el('span', minimum + ' €', 'price'), el('span', 'Min. sipariş', 'size'));
   button.append(label, amount);
   button.addEventListener('click', () => {
+    input.blur();
     const entry = { milanoAddress: { ...state[1], scroll: window.scrollY }, town };
     history.replaceState({ milanoAddress: entry.milanoAddress, returnTown: town }, '');
     history.pushState(entry, '');
@@ -89,6 +91,7 @@ function townCard(town, minimum) {
 }
 
 function showTown(town) {
+  input.blur();
   const entries = streetsByTown.get(town);
   const title = byId('town-title');
   title.textContent = town;
@@ -126,7 +129,8 @@ function restoreAddress(entry) {
 }
 
 function renderMenu(query, filter) {
-  const tokens = query.trim().split(/[\s,;]+/);
+  const tokens = query.trim().split(/[\s,;]+/).filter(Boolean);
+  if (!tokens.length) return data.menu.filter(row => !filter || row[2] === filter).map(row => menuCard(row));
   const coded = tokens.every(token => /^\d{1,3}[mg]?$/i.test(token));
   const total = byId('total');
   if (coded && (tokens.length > 1 || /[mg]$/i.test(tokens[0]))) {
@@ -182,6 +186,7 @@ function renderAddresses(query, filter) {
 }
 
 function render() {
+  clearQuery.hidden = input.value.length === 0;
   const { query, filter } = state[active];
   byId('total').hidden = true;
   const cards = active === 0 ? renderMenu(query, filter) : renderAddresses(query, filter);
@@ -196,7 +201,7 @@ function renderFilters() {
     filters.replaceChildren();
     return;
   }
-  const choices = active === 0 ? categories.map(label => [label, label]) : [12, 17, 22, 27].map(value => [String(value), value + ' €']);
+  const choices = categories.map(label => [label, label]);
   const buttons = [['', 'Tümü'], ...choices].map(([value, label]) => {
     const button = el('button', label);
     button.type = 'button';
@@ -246,11 +251,22 @@ input.addEventListener('input', () => {
   state[active].query = input.value;
   render();
 });
+// Suppress the button's default focus transfer before iOS handles the tap.
+for (const eventName of ['pointerdown', 'mousedown']) {
+  clearQuery.addEventListener(eventName, event => event.preventDefault());
+}
+clearQuery.addEventListener('click', () => {
+  input.value = '';
+  state[active].query = '';
+  input.focus({ preventScroll: true });
+  render();
+});
 // iOS keeps the layout viewport tall while the keyboard shrinks the visual viewport.
 const viewport = window.visualViewport;
 const compactRoot = document.documentElement;
 let searchBaseline = viewport?.height ?? window.innerHeight;
 let keyboardWasOpen = false;
+let keyboardDismissed = false;
 let searchScroll = 0;
 let viewportFrame = 0;
 
@@ -276,11 +292,15 @@ function updateSearchViewport() {
     closeCompactSearch();
     return;
   }
+  searchBaseline = Math.max(searchBaseline, height);
   const keyboardOpen = searchBaseline - height > 120;
   if (keyboardWasOpen && !keyboardOpen) {
     closeCompactSearch();
+    keyboardDismissed = true;
     return;
   }
+  if (keyboardDismissed && !keyboardOpen) return;
+  keyboardDismissed = false;
   keyboardWasOpen = keyboardOpen;
   compactRoot.classList.add('search-compact');
   compactRoot.style.setProperty('--search-top', (viewport?.offsetTop ?? 0) + 'px');
@@ -292,12 +312,19 @@ function scheduleSearchViewport() {
 }
 
 input.addEventListener('focus', () => {
+  keyboardDismissed = false;
   searchScroll = window.scrollY;
   searchBaseline = Math.max(searchBaseline, viewport?.height ?? window.innerHeight);
   keyboardWasOpen = false;
   updateSearchViewport();
 });
 input.addEventListener('blur', closeCompactSearch);
+input.addEventListener('click', () => {
+  if (keyboardDismissed) {
+    keyboardDismissed = false;
+    updateSearchViewport();
+  }
+});
 viewport?.addEventListener('resize', scheduleSearchViewport);
 viewport?.addEventListener('scroll', scheduleSearchViewport);
 window.addEventListener('resize', scheduleSearchViewport);
@@ -306,10 +333,6 @@ window.addEventListener('orientationchange', () => {
   searchBaseline = 0;
   scheduleSearchViewport();
 });
-byId('results-panel').addEventListener('pointerdown', event => {
-  // Keep the keyboard open while scrolling results, but dismiss it for navigation.
-  if (event.target.closest('button, a')) input.blur();
-});
 byId('town-back').addEventListener('click', () => history.back());
 window.addEventListener('popstate', event => {
   if (event.state?.milanoAddress) restoreAddress(event.state);
@@ -317,5 +340,14 @@ window.addEventListener('popstate', event => {
 if (history.state?.milanoAddress) restoreAddress(history.state);
 else selectTab(0);
 if ('serviceWorker' in navigator && window.isSecureContext) {
-  navigator.serviceWorker.register('./sw.js').catch(error => console.warn('Milano offline cache:', error));
+  let refreshing = false;
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing || !hadController) return;
+    refreshing = true;
+    window.location.reload();
+  });
+  navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+    .then(registration => registration.update())
+    .catch(error => console.warn('Milano offline cache:', error));
 }

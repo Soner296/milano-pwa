@@ -1,5 +1,5 @@
-const cacheName = 'milano-v10';
-const files = ['./', './index.html', './style.css', './app.js', './data.js', './openplz-streets.js', './local-data.js',
+const cacheName = 'milano-v13';
+const files = ['./', './index.html', './style.css?v=13', './app.js?v=13', './data.js', './openplz-streets.js', './local-data.js?v=13',
   './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './speisekarte.pdf'];
 
 self.addEventListener('install', event => {
@@ -16,11 +16,16 @@ self.addEventListener('fetch', event => {
   const { request } = event;
   if (request.method !== 'GET' || !request.url.startsWith(self.registration.scope)) return;
   event.respondWith(caches.open(cacheName).then(async cache => {
-    const cached = await cache.match(request);
-    if (cached) return cached;
     try {
-      return await fetch(request);
+      const response = await fetch(request, { cache: 'no-cache' });
+      if (response.status >= 500) throw new Error('Milano server unavailable');
+      if (response.ok) {
+        event.waitUntil(cache.put(request, response.clone()).catch(() => {}));
+      }
+      return response;
     } catch (error) {
+      const cached = await cache.match(request);
+      if (cached) return cached;
       if (request.mode === 'navigate') return cache.match('./index.html');
       throw error;
     }

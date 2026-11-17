@@ -18,6 +18,9 @@ button{cursor:pointer;color:inherit}
 .search{display:flex;align-items:center;gap:10px;background:#fffdfa;border:1px solid #b0b7ac;border-radius:13px;padding:0 13px}
 .search span{font-size:1.6rem}
 .search input{border:0;width:100%;min-width:0;min-height:50px;background:transparent;color:inherit;font-size:16px;outline:none}
+.search input::-webkit-search-cancel-button{display:none;-webkit-appearance:none}
+#clear-query{flex:none;width:44px;height:44px;border:0;border-radius:50%;background:transparent;font-size:26px;line-height:1;color:#506258;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#clear-query:active{background:#e8efe5}
 .search:focus-within{outline:2px solid #19664b;outline-offset:2px}
 :focus-visible{outline:2px solid #19664b;outline-offset:2px}
 #hint,.meta,#count,footer,.size{color:#506258;font-size:.79rem}
