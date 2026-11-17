@@ -1,5 +1,5 @@
-const cacheName = 'milano-v6';
-const files = ['./', './index.html', './style.css', './app.js', './data.js', './openplz-streets.js',
+const cacheName = 'milano-v10';
+const files = ['./', './index.html', './style.css', './app.js', './data.js', './openplz-streets.js', './local-data.js',
   './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './speisekarte.pdf'];
 
 self.addEventListener('install', event => {

@@ -1,5 +1,3 @@
-import data from './data.js';
-import openPlzStreets from './openplz-streets.js';
 
 const byId = id => document.getElementById(id);
 const input = byId('query');
@@ -192,6 +190,12 @@ function render() {
 }
 
 function renderFilters() {
+  filters.hidden = active === 1;
+  if (active === 1) {
+    state[1].filter = '';
+    filters.replaceChildren();
+    return;
+  }
   const choices = active === 0 ? categories.map(label => [label, label]) : [12, 17, 22, 27].map(value => [String(value), value + ' €']);
   const buttons = [['', 'Tümü'], ...choices].map(([value, label]) => {
     const button = el('button', label);
@@ -218,9 +222,9 @@ function selectTab(index) {
   input.value = state[index].query;
   input.placeholder = address ? 'Ör. Grünstadt, Kirchheimer Straße' : 'Numara veya yemek adı';
   byId('search-label').textContent = address ? 'Yer veya sokak ara' : 'Yemek ara';
-  byId('hint').textContent = address ? 'Minimum sipariş tutarı teslimat yerine göre gösterilir.' : 'Boyut için 24m veya 27g yaz. Birden fazla kodda toplamı gör.';
+  byId('hint').hidden = address;
   byId('results-title').textContent = address ? 'Teslimat yerleri' : 'Speisekarte';
-  byId('coverage').hidden = !address;
+  byId('results-title').classList.toggle('address-title', address);
   byId('street-attribution').hidden = !address;
   byId('pdf-link').textContent = address ? 'Teslimat haritası (PDF) ↗' : 'Orijinal menü PDF’si ↗';
   byId('pdf-link').href = './speisekarte.pdf#page=' + (address ? 8 : 2);
@@ -241,6 +245,70 @@ tabs.forEach((tab, index) => {
 input.addEventListener('input', () => {
   state[active].query = input.value;
   render();
+});
+// iOS keeps the layout viewport tall while the keyboard shrinks the visual viewport.
+const viewport = window.visualViewport;
+const compactRoot = document.documentElement;
+let searchBaseline = viewport?.height ?? window.innerHeight;
+let keyboardWasOpen = false;
+let searchScroll = 0;
+let viewportFrame = 0;
+
+function closeCompactSearch() {
+  const wasCompact = compactRoot.classList.contains('search-compact');
+  compactRoot.classList.remove('search-compact');
+  compactRoot.style.removeProperty('--search-top');
+  compactRoot.style.removeProperty('--search-height');
+  keyboardWasOpen = false;
+  if (wasCompact) window.scrollTo(0, searchScroll);
+}
+
+function updateSearchViewport() {
+  viewportFrame = 0;
+  const height = viewport?.height ?? window.innerHeight;
+  if (document.activeElement !== input || byId('results-panel').hidden) {
+    closeCompactSearch();
+    searchBaseline = height;
+    return;
+  }
+  // Keep pinch zoom independent from keyboard detection.
+  if (viewport && Math.abs(viewport.scale - 1) > 0.05) {
+    closeCompactSearch();
+    return;
+  }
+  const keyboardOpen = searchBaseline - height > 120;
+  if (keyboardWasOpen && !keyboardOpen) {
+    closeCompactSearch();
+    return;
+  }
+  keyboardWasOpen = keyboardOpen;
+  compactRoot.classList.add('search-compact');
+  compactRoot.style.setProperty('--search-top', (viewport?.offsetTop ?? 0) + 'px');
+  compactRoot.style.setProperty('--search-height', height + 'px');
+}
+
+function scheduleSearchViewport() {
+  if (!viewportFrame) viewportFrame = requestAnimationFrame(updateSearchViewport);
+}
+
+input.addEventListener('focus', () => {
+  searchScroll = window.scrollY;
+  searchBaseline = Math.max(searchBaseline, viewport?.height ?? window.innerHeight);
+  keyboardWasOpen = false;
+  updateSearchViewport();
+});
+input.addEventListener('blur', closeCompactSearch);
+viewport?.addEventListener('resize', scheduleSearchViewport);
+viewport?.addEventListener('scroll', scheduleSearchViewport);
+window.addEventListener('resize', scheduleSearchViewport);
+window.addEventListener('orientationchange', () => {
+  input.blur();
+  searchBaseline = 0;
+  scheduleSearchViewport();
+});
+byId('results-panel').addEventListener('pointerdown', event => {
+  // Keep the keyboard open while scrolling results, but dismiss it for navigation.
+  if (event.target.closest('button, a')) input.blur();
 });
 byId('town-back').addEventListener('click', () => history.back());
 window.addEventListener('popstate', event => {
