@@ -73,19 +73,19 @@ h1{font:normal 29px Georgia,serif;margin:0}
 footer{padding:20px 0 calc(20px + env(safe-area-inset-bottom))}
 @media(max-width:360px){.masthead,main{padding-inline:13px}.card{gap:6px;padding-inline:8px}.prices{gap:6px}}
 
-html.search-compact,html.search-compact body{overflow:hidden;overscroll-behavior:none}
-.search-compact header,.search-compact #main-tabs,.search-compact #filters,
-.search-compact #results-panel .results-header,.search-compact #hint,
-.search-compact #results-panel footer{display:none!important}
-.search-compact main{position:fixed;top:var(--search-top,0px);left:0;right:0;height:var(--search-height,100dvh);padding-top:8px;padding-bottom:max(8px,env(safe-area-inset-bottom));overflow:hidden}
-.search-compact #results-panel{height:100%;display:flex;flex-direction:column;min-height:0}
-.search-compact .search-area{flex:none;padding:3px}
-.search-compact .search-area label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.search-compact #results{flex:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;align-content:start;margin-top:8px}
-.search-compact #total{flex:none;margin:8px 0 0}
+:root:is(.search-compact,:has(#query:focus)),:root:is(.search-compact,:has(#query:focus)) body{overflow:hidden;overscroll-behavior:none}
+:root:is(.search-compact,:has(#query:focus)) header,:root:is(.search-compact,:has(#query:focus)) #main-tabs,:root:is(.search-compact,:has(#query:focus)) #filters,
+:root:is(.search-compact,:has(#query:focus)) #results-panel .results-header,:root:is(.search-compact,:has(#query:focus)) #hint,
+:root:is(.search-compact,:has(#query:focus)) #results-panel footer{display:none!important}
+:root:is(.search-compact,:has(#query:focus)) main{position:fixed;top:var(--search-top,0px);left:0;right:0;height:var(--search-height,100dvh);padding-top:8px;padding-bottom:max(8px,env(safe-area-inset-bottom));overflow:hidden}
+:root:is(.search-compact,:has(#query:focus)) #results-panel{height:100%;display:flex;flex-direction:column;min-height:0}
+:root:is(.search-compact,:has(#query:focus)) .search-area{flex:none;padding:3px}
+:root:is(.search-compact,:has(#query:focus)) .search-area label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:root:is(.search-compact,:has(#query:focus)) #results{flex:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;align-content:start;margin-top:8px}
+:root:is(.search-compact,:has(#query:focus)) #total{flex:none;margin:8px 0 0}
 
 </style>
-<title>Milano · Güncel arama 14</title>
+<title>Milano · iPhone arama 15</title>
 </head>
 <body>
 <header>
@@ -3456,73 +3456,65 @@ clearQuery.addEventListener('click', () => {
   input.focus({ preventScroll: true });
   render();
 });
-// iOS keeps the layout viewport tall while the keyboard shrinks the visual viewport.
+// Focus controls the compact layout. VisualViewport only supplies its geometry.
 const viewport = window.visualViewport;
 const compactRoot = document.documentElement;
 let searchBaseline = viewport?.height ?? window.innerHeight;
 let keyboardWasOpen = false;
-let keyboardDismissed = false;
 let searchScroll = 0;
 let viewportFrame = 0;
+let viewportResized = false;
 
 function closeCompactSearch() {
-  const wasCompact = compactRoot.classList.contains('search-compact');
   compactRoot.classList.remove('search-compact');
   compactRoot.style.removeProperty('--search-top');
   compactRoot.style.removeProperty('--search-height');
   keyboardWasOpen = false;
-  if (wasCompact) window.scrollTo(0, searchScroll);
+  window.scrollTo(0, searchScroll);
 }
 
-function updateSearchViewport() {
-  viewportFrame = 0;
+function updateSearchViewport(checkKeyboard = false) {
   const height = viewport?.height ?? window.innerHeight;
   if (document.activeElement !== input || byId('results-panel').hidden) {
-    closeCompactSearch();
-    searchBaseline = height;
+    if (compactRoot.classList.contains('search-compact')) closeCompactSearch();
+    searchBaseline = Math.max(searchBaseline, height);
     return;
   }
-  searchBaseline = Math.max(searchBaseline, height);
-  const keyboardOpen = searchBaseline - height > 120;
-  if (keyboardWasOpen && searchBaseline - height < 60) {
-    closeCompactSearch();
-    keyboardDismissed = true;
-    return;
-  }
-  if (keyboardDismissed && !keyboardOpen) return;
-  keyboardDismissed = false;
-  keyboardWasOpen = keyboardWasOpen || keyboardOpen;
+
   compactRoot.classList.add('search-compact');
   compactRoot.style.setProperty('--search-top', (viewport?.offsetTop ?? 0) + 'px');
   compactRoot.style.setProperty('--search-height', height + 'px');
+
+  if (!checkKeyboard) return;
+  if (searchBaseline - height > 150) keyboardWasOpen = true;
+  // Dismissing the keyboard can leave the input focused in Safari.
+  // Blur only after a keyboard-sized reduction has actually been observed.
+  if (keyboardWasOpen && height >= searchBaseline - 60) input.blur();
 }
 
-function scheduleSearchViewport() {
-  if (!viewportFrame) viewportFrame = requestAnimationFrame(updateSearchViewport);
+function scheduleSearchViewport(resized = false) {
+  viewportResized = viewportResized || resized;
+  if (viewportFrame) return;
+  viewportFrame = requestAnimationFrame(() => {
+    viewportFrame = 0;
+    const checkKeyboard = viewportResized;
+    viewportResized = false;
+    updateSearchViewport(checkKeyboard);
+  });
 }
 
 input.addEventListener('focus', () => {
-  keyboardDismissed = false;
   searchScroll = window.scrollY;
   searchBaseline = Math.max(searchBaseline, viewport?.height ?? window.innerHeight);
   keyboardWasOpen = false;
   updateSearchViewport();
 });
 input.addEventListener('blur', closeCompactSearch);
-input.addEventListener('input', () => {
-  keyboardDismissed = false;
-  updateSearchViewport();
-});
-window.addEventListener('pageshow', scheduleSearchViewport);
-input.addEventListener('click', () => {
-  if (keyboardDismissed) {
-    keyboardDismissed = false;
-    updateSearchViewport();
-  }
-});
-viewport?.addEventListener('resize', scheduleSearchViewport);
-viewport?.addEventListener('scroll', scheduleSearchViewport);
-window.addEventListener('resize', scheduleSearchViewport);
+input.addEventListener('input', () => updateSearchViewport());
+viewport?.addEventListener('resize', () => scheduleSearchViewport(true));
+viewport?.addEventListener('scroll', () => scheduleSearchViewport());
+window.addEventListener('resize', () => scheduleSearchViewport(true));
+window.addEventListener('pageshow', () => scheduleSearchViewport());
 window.addEventListener('orientationchange', () => {
   input.blur();
   searchBaseline = 0;
